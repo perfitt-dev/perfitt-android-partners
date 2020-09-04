@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.perfitt.android.perfitt_partners">
+
+    <application>
+        <activity
+            android:name=".activities.FootCameraActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

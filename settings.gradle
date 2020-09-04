@@ -1,0 +1,3 @@
+include ':perfitt-partners'
+include ':app'
+rootProject.name = "perfittPartners"
