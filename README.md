@@ -1,0 +1,1 @@
+# perfitt-android-partners
