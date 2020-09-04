@@ -9,16 +9,14 @@ ext {
     libraryVersionName = '1.0.0-alpha'
 
     // Bintray setting info
-    repositoryName = 'perfittPartners' // Bintray repository name
-    packageName = 'com.perfitt.android' // module name ex) compile 'tech.thdev:...'
+    repositoryName = 'perfittPartners'
+    packageName = 'com.perfitt.android'
 
     description = 'Is perfitt partners alpha'
 
-    websiteUrl = 'https://gitlab.com/perfitt-holzzack/perfitt-android-partners' // site url
-    gitLabRepoUrl = 'https://gitlab.com/perfitt-holzzack/perfitt-android-partners.git'
-    // git repo url
-
-    githubRepo = 'Perfitt-Holzzack/perfitt-android-partners'
+    websiteUrl = 'https://github.com/perfitt-dev/perfitt-android-partners'
+    githubRepoUrl = 'https://github.com/perfitt-dev/perfitt-android-partners.git'
+    githubRepo = 'perfitt-dev/perfitt-android-partners'
     githubReleaseNotesFile = 'CHANGELOG.md'
 
     // Dependencies version
@@ -31,5 +29,4 @@ ext {
     appcompat = "androidx.appcompat:appcompat:$rootProject.ext.appCompatVersion"
     ktx = "androidx.core:core-ktx:$rootProject.ext.ktxVersion"
     constraintlayout = "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
-
 }
