@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,12 +27,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public CameraPreview(Context context) {
         super(context);
-        Log.v("Dony", "CameraPreview(Context context) 생성자호출");
     }
 
     public CameraPreview(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.v("Dony", "CameraPreview(Context context, AttributeSet attrs) 생성자호출");
         mCamera = Camera.open();
         prSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
     }
@@ -55,7 +52,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Log.v("Dony", "surfaceCreated() ");
         // Surface가 생성되었으니 프리뷰를 어디에 띄울지 지정해준다. (holder 로 받은 SurfaceHolder에 뿌려준다.
         try {
             if (mCamera == null) {
@@ -63,35 +59,27 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
             params = mCamera.getParameters();
             if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-                Log.w("Dony", "portrait");
                 params.set("orientation", "portrait");
                 mCamera.setDisplayOrientation(90);
                 params.setRotation(90);
             } else {
-                Log.w("Dony", "landscape");
                 params.set("orientation", "landscape");
                 mCamera.setDisplayOrientation(0);
                 params.setRotation(0);
             }
 // 1024 768
             Camera.Size size = getBestPreviewSize(1280, 720);
-            Log.w("Dony", "size.width: " + size.width);
-            Log.w("Dony", "size.height: " + size.height);
             params.setPictureSize(size.width, size.height);
             mCamera.setParameters(params);
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (IOException e) {
-            Log.w("Dony", "Error setting camera preview: " + e.getMessage());
         }
         params.setZoom(currentZoom);
-        Log.w("Dony", "maxZoom : " + params.getMaxZoom());
-        Log.w("Dony", "getZoom : " + params.getZoom());
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.v("Dony", "surfaceDestroyed ");
         // 프리뷰 제거시 카메라 사용도 끝났다고 간주하여 리소스를 전부 반환한다
         if (mCamera != null) {
             mCamera.stopPreview();
@@ -123,7 +111,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        Log.v("Dony", "surfaceChanged ");
         // 프리뷰를 회전시키거나 변경시 처리를 여기서 해준다.
         // 프리뷰 변경시에는 먼저 프리뷰를 멈춘다음 변경해야한다.
         if (holder.getSurface() == null) {
@@ -143,8 +130,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
             params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         }
-        Log.v("Dony", "surfaceChanged  prPreviewSize.width: " + prPreviewSize.width);
-        Log.v("Dony", "surfaceChanged  prPreviewSize.height: " + prPreviewSize.height);
 
         params.setPreviewSize(prPreviewSize.width, prPreviewSize.height);
         mCamera.setParameters(params);
@@ -153,17 +138,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (Exception e) {
-            Log.w("Dony", "Error starting camera preview: " + e.getMessage());
         }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.v("Dony", "onMeasure()");
         if (prSupportedPreviewSizes != null) {
             prPreviewSize = getBestPreviewSize(1280, 720);
-            Log.v("Dony", "prPreviewSize.width: " + prPreviewSize.width);
-            Log.v("Dony", "prPreviewSize.height: " + prPreviewSize.height);
             setMeasuredDimension(prPreviewSize.width, prPreviewSize.height);
         }
     }

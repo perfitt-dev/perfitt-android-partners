@@ -6,7 +6,7 @@ ext {
     minSdkVersion = 22
 
     versionCode = 1
-    libraryVersionName = '1.0.0-alpha'
+    libraryVersionName = '1.0.0-alpha2'
 
     // Bintray setting info
     repositoryName = 'perfittPartners'

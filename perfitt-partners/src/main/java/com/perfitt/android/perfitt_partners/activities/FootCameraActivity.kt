@@ -1,17 +1,33 @@
 package com.perfitt.android.perfitt_partners.activities
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.perfitt.android.perfitt_partners.R
+import com.perfitt.android.perfitt_partners.utils.DialogUtil
+import com.perfitt.android.perfitt_partners.utils.FileUtil
+import com.perfitt.android.perfitt_partners.utils.PreferenceUtil
 import kotlinx.android.synthetic.main.activity_foot_camera.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 
 class FootCameraActivity : AppCompatActivity(), SensorEventListener {
+    private var type = 0
+    private var fileName = ""
+
     private val sensorManager by lazy {
         getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
@@ -19,6 +35,54 @@ class FootCameraActivity : AppCompatActivity(), SensorEventListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foot_camera)
+        onNewIntent(intent)
+        supportActionBar?.setTitle(if (type == TYPE_FOOT_RIGHT) R.string.activity_foot_camera_title_right else R.string.activity_foot_camera_title_left)
+
+        PreferenceUtil.instance(this).run {
+            if (!isFirstAppTutorial) {
+                startActivity(Intent(this@FootCameraActivity, TutorialWebViewActivity::class.java))
+                setFirstAppTutorial(true)
+            } else {
+                DialogUtil.instance.showMessageDialog(
+                    this@FootCameraActivity,
+                    "",
+                    if (type == TYPE_FOOT_RIGHT) getString(R.string.activity_foot_camera_title_right_message) else getString(R.string.activity_foot_camera_title_left_message)
+                )
+            }
+        }
+
+        btn_zoom_in.setOnClickListener {
+            camera_preview.zoomIn()
+        }
+
+        btn_zoom_out.setOnClickListener {
+            camera_preview.zoomOut()
+        }
+
+        btn_camera.setOnClickListener {
+            progress_bar.visibility = View.VISIBLE
+            unregisterListener()
+            camera_preview.takePhoto { data, _ ->
+                // 640 * 480 가로길이가 더 김.
+                BitmapFactory.decodeByteArray(data, 0, data.size).let { bitmap ->
+                    val rotateBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, Matrix().apply {
+                        postRotate(180f)
+                    }, false)
+                    saveBitmapToJpeg(rotateBitmap)
+                    startActivity(Intent(applicationContext, FootCameraConfirmActivity::class.java).apply {
+                        putExtra("currentZoom", camera_preview.currentZoom)
+                        putExtra("type", this@FootCameraActivity.type)
+                        putExtra("fileName", fileName)
+                    })
+                    finish()
+                }
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        type = intent?.getIntExtra("type", TYPE_FOOT_RIGHT) ?: TYPE_FOOT_RIGHT
     }
 
     override fun onResume() {
@@ -34,6 +98,23 @@ class FootCameraActivity : AppCompatActivity(), SensorEventListener {
     override fun onPause() {
         super.onPause()
         unregisterListener()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_foot_camera, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_tutorial -> {
+                startActivity(Intent(this, TutorialWebViewActivity::class.java).apply {
+                    putExtra("uri", "https://www.perfitt.io/")
+                })
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun registerListener() {
@@ -80,5 +161,33 @@ class FootCameraActivity : AppCompatActivity(), SensorEventListener {
                 layout_empty.visibility = View.VISIBLE
             }
         }
+    }
+
+    private fun saveBitmapToJpeg(bitmap: Bitmap): File {
+        fileName = when (type) {
+            TYPE_FOOT_RIGHT -> FileUtil.FILE_NAME_FOOT_RIGHT
+            TYPE_FOOT_LEFT -> FileUtil.FILE_NAME_FOOT_LEFT
+            else -> ""
+        }
+
+        val storage = FileUtil.instance.getFootFilePath(this).path
+        val tempFile = File(storage, fileName)
+        try {
+            tempFile.createNewFile()
+            val out = FileOutputStream(tempFile)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+            out.close()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return tempFile
+    }
+
+    companion object {
+        const val TYPE_FOOT_RIGHT = 1001
+        const val TYPE_FOOT_LEFT = 1002
     }
 }

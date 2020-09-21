@@ -11,10 +11,10 @@ android {
 
     defaultConfig {
         applicationId "com.perfitt.android"
-        minSdkVersion 22
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.libraryVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,8 +29,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(':perfitt-partners')
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.ktx
     implementation rootProject.ext.appcompat
     implementation rootProject.ext.constraintlayout
+//    implementation 'com.perfitt.android:perfitt-partners:1.0.0-alpha'
 }

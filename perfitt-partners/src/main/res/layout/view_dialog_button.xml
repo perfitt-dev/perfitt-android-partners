@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_rect_bottom_corner_white"
+    android:gravity="end"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:paddingStart="22dp"
+    android:paddingEnd="22dp">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:minWidth="64dp"
+        android:padding="18dp"
+        android:visibility="gone"
+        tools:text="ETC" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_negative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp"
+        android:background="@null"
+        android:minWidth="64dp"
+        android:padding="18dp"
+        android:textColor="@color/color_primary"
+        tools:text="NEGATIVE" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_positive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:minWidth="64dp"
+        android:padding="18dp"
+        android:textColor="@color/color_primary"
+        tools:text="POSITIVE" />
+</androidx.appcompat.widget.LinearLayoutCompat>

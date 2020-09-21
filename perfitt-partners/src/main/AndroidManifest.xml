@@ -5,6 +5,26 @@
     <application>
         <activity
             android:name=".activities.FootCameraActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="camera"
+                    android:scheme="perfittpartners" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.FootCameraConfirmActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.TutorialWebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.LandingActivity"
             android:screenOrientation="portrait" />
     </application>
 
