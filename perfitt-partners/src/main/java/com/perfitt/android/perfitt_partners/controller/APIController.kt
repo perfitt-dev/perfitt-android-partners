@@ -149,16 +149,13 @@ class APIController {
             }
             return page
         } catch (e: MalformedURLException) { // for URL.
-            Log.d("Dony", "MalformedURLException:$e")
             errorUnit(400, "MalformedURLException${e.toString()}")
             e.printStackTrace()
         } catch (e: IOException) { // for openConnection().
-            Log.d("Dony", "IOException")
             errorUnit(400, "IOException${e.toString()}")
             e.printStackTrace()
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.d("Dony", "Exception")
             errorUnit(400, "Exception${e.toString()}")
         } finally {
             urlConn?.disconnect()

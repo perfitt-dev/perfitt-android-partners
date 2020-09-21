@@ -1,15 +1,13 @@
 package com.perfitt.android.perfitt_partners.activities
 
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Base64
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -19,9 +17,6 @@ import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.utils.DialogUtil
 import com.perfitt.android.perfitt_partners.utils.FileUtil
 import kotlinx.android.synthetic.main.activity_foot_camera_confirm.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.File
 
@@ -61,19 +56,18 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                             }
                         }
                     }
-
-                    CoroutineScope(Dispatchers.IO).launch {
+                    val handler = Handler()
+                    Thread(Runnable {
                         val sourceType = packageManager.getPackageInfo(packageName, 0).versionName + "_" + Build.MODEL + "_android-" + Build.VERSION.SDK_INT
-                        Log.d("Dony", "request")
                         val response = APIController.instance.requestUsers(PerfittPartners.instance.apiKey, leftData, rightData, sourceType) { errorCode, errorMessage ->
-                            CoroutineScope(Dispatchers.Main).launch {
+                            handler.post {
                                 progressDialog?.dismiss()
                                 Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
                             }
                         }
 
                         response?.let { confirm ->
-                            CoroutineScope(Dispatchers.Main).launch {
+                            handler.post {
                                 progressDialog?.dismiss()
                                 JSONObject(confirm).getString("id").let { id ->
                                     PerfittPartners.instance.confirmListener?.onConfirm("javascript:callback('$id')")
@@ -81,8 +75,8 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                    }
 
+                    }).start()
                 }
             }
         }
@@ -101,7 +95,6 @@ class FootCameraConfirmActivity : AppCompatActivity() {
         intent?.let {
             it.getStringExtra("fileName").let { fileName ->
                 (FileUtil.instance.getFootFilePath(this).path + "/$fileName").let { path ->
-                    Log.d("Dony", "path$path")
                     BitmapFactory.decodeFile(path, BitmapFactory.Options()).let { bitmap ->
                         val rotateBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, Matrix().apply {
                             postRotate(-90f)

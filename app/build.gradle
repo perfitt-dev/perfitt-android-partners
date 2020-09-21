@@ -34,5 +34,4 @@ dependencies {
     implementation rootProject.ext.ktx
     implementation rootProject.ext.appcompat
     implementation rootProject.ext.constraintlayout
-//    implementation 'com.perfitt.android:perfitt-partners:1.0.0-alpha'
 }
