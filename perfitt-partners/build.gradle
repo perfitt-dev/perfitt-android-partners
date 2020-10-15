@@ -104,12 +104,20 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+    aaptOptions {
+        noCompress "tflite"
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -118,6 +126,8 @@ dependencies {
     implementation rootProject.ext.ktx
     implementation rootProject.ext.appcompat
     implementation rootProject.ext.constraintlayout
+    implementation('org.tensorflow:tensorflow-lite:2.3.0') { changing = true }
+    implementation('org.tensorflow:tensorflow-lite-metadata:0.0.0-nightly') { changing = true }
 }
 
 // JCenter publish

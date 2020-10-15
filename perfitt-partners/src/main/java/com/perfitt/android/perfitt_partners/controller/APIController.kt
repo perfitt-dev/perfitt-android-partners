@@ -131,7 +131,17 @@ class APIController {
             // [2-3]. 연결 요청 확인.
             // 실패 시 null을 리턴하고 메서드를 종료.
             if (urlConn.responseCode !== HttpURLConnection.HTTP_OK) {
-                errorUnit(urlConn.responseCode, urlConn.responseMessage)
+                val errorReader = BufferedReader(InputStreamReader(urlConn.errorStream, "UTF-8"))
+//                var line = ""
+                val error = errorReader.readLine();
+//                while (errorReader.readLine().also { line = it } != null) {
+//                    error += line
+//                    Log.d("Dony", "line:$line")
+//                }
+//                errorUnit(urlConn.responseCode, urlConn.responseMessage)
+                Log.d("Dony", "error:$error")
+                errorUnit(urlConn.responseCode, JSONObject(error).getString("message"))
+
                 return null
             }
 

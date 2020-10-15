@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Base64
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.perfitt.android.perfitt_partners.R
@@ -26,16 +27,16 @@ class FootCameraConfirmActivity : AppCompatActivity() {
     var progressDialog: AlertDialog? = null
     var currentZoom: Int = 0
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foot_camera_confirm)
         onNewIntent(intent)
-        supportActionBar?.setTitle(if (type == FootCameraActivity.TYPE_FOOT_RIGHT) R.string.activity_foot_camera_title_right_confirm else R.string.activity_foot_camera_title_left_confirm)
-
+        supportActionBar?.setTitle(if (type == DetectorActivity.TYPE_FOOT_RIGHT) R.string.activity_foot_camera_title_right_confirm else R.string.activity_foot_camera_title_left_confirm)
         btn_next.setOnClickListener {
-            if (type == FootCameraActivity.TYPE_FOOT_RIGHT) {
-                startActivity(Intent(this, FootCameraActivity::class.java).apply {
-                    putExtra("type", FootCameraActivity.TYPE_FOOT_LEFT)
+            if (type == DetectorActivity.TYPE_FOOT_RIGHT) {
+                startActivity(Intent(this, DetectorActivity::class.java).apply {
+                    putExtra("type", DetectorActivity.TYPE_FOOT_LEFT)
                     putExtra("currentZoom", currentZoom)
                 })
                 finish()
@@ -82,7 +83,7 @@ class FootCameraConfirmActivity : AppCompatActivity() {
         }
 
         btn_retake.setOnClickListener {
-            startActivity(Intent(this, FootCameraActivity::class.java).apply {
+            startActivity(Intent(this, DetectorActivity::class.java).apply {
                 putExtra("type", this@FootCameraConfirmActivity.type)
                 putExtra("currentZoom", currentZoom)
             })
@@ -97,7 +98,7 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                 (FileUtil.instance.getFootFilePath(this).path + "/$fileName").let { path ->
                     BitmapFactory.decodeFile(path, BitmapFactory.Options()).let { bitmap ->
                         val rotateBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, Matrix().apply {
-                            postRotate(-90f)
+//                            postRotate(-90f)
                         }, false)
                         img_preview.setImageBitmap(rotateBitmap)
                     }

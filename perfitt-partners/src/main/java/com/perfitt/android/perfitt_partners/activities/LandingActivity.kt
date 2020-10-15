@@ -24,7 +24,7 @@ class LandingActivity : AppCompatActivity() {
                         .setMessage(getString(R.string.msg_permission_camera))
                         .setPermissions(arrayListOf(Manifest.permission.CAMERA))
                         .onGranted {
-                            startActivity(Intent(this, FootCameraActivity::class.java))
+                            startActivity(Intent(this, DetectorActivity::class.java))
                             finish()
                         }
                         .onDenied {
