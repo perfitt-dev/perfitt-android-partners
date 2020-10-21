@@ -10,7 +10,7 @@
 
     <application>
         <activity
-            android:name=".activities.FootCameraActivity"
+            android:name=".activities.DetectorActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -31,10 +31,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LandingActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".activities.DetectorActivity"
             android:screenOrientation="portrait" />
     </application>
 

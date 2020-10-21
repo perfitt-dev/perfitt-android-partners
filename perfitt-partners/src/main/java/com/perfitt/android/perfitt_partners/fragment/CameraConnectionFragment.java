@@ -436,6 +436,8 @@ public class CameraConnectionFragment extends Fragment {
             manager.openCamera(cameraId, stateCallback, backgroundHandler);
 
             maxZoom = manager.getCameraCharacteristics(cameraId).get(CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM) * 10;
+            setZoomIn();
+            setZoomIn();
         } catch (final CameraAccessException e) {
             LOGGER.e(e, "Exception!");
         } catch (final InterruptedException e) {

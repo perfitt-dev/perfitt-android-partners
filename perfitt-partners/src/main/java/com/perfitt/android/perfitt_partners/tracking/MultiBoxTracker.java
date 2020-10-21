@@ -25,6 +25,7 @@ import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -67,7 +68,7 @@ public class MultiBoxTracker {
     private final Paint boxPaint = new Paint();
     private final float textSizePx;
     private final BorderedText borderedText;
-    private Matrix frameToCanvasMatrix;
+    public Matrix frameToCanvasMatrix;
     private int frameWidth;
     private int frameHeight;
     private int sensorOrientation;
@@ -172,7 +173,8 @@ public class MultiBoxTracker {
 
             final RectF detectionScreenRect = new RectF();
             rgbFrameToScreen.mapRect(detectionScreenRect, detectionFrameRect);
-
+//            Log.d("Dony","detectionFrameRect : " + detectionFrameRect.top);
+//            Log.d("Dony","detectionScreenRect: " + detectionScreenRect.top);
             logger.v(
                     "Result! Frame: " + result.getLocation() + " mapped to screen:" + detectionScreenRect);
 

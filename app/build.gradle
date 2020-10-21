@@ -38,8 +38,10 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(':perfitt-partners')
-    implementation rootProject.ext.kotlin
-    implementation rootProject.ext.ktx
-    implementation rootProject.ext.appcompat
-    implementation rootProject.ext.constraintlayout
+//    implementation rootProject.ext.kotlin
+//    implementation rootProject.ext.ktx
+//    implementation rootProject.ext.appcompat
+//    implementation rootProject.ext.constraintlayout
+//    implementation rootProject.ext.tensorLite
+//    implementation rootProject.ext.tensorMeta
 }

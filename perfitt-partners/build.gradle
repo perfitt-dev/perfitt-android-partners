@@ -121,13 +121,13 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation rootProject.ext.kotlin
-    implementation rootProject.ext.ktx
-    implementation rootProject.ext.appcompat
-    implementation rootProject.ext.constraintlayout
-    implementation('org.tensorflow:tensorflow-lite:2.3.0') { changing = true }
-    implementation('org.tensorflow:tensorflow-lite-metadata:0.0.0-nightly') { changing = true }
+    api fileTree(dir: "libs", include: ["*.jar"])
+    api rootProject.ext.kotlin
+    api rootProject.ext.ktx
+    api rootProject.ext.appcompat
+    api rootProject.ext.constraintlayout
+    api rootProject.ext.tensorLite
+    api rootProject.ext.tensorMeta
 }
 
 // JCenter publish
@@ -138,8 +138,13 @@ task sourcesJar(type: Jar) {
 
 // Optional docs
 task javadoc(type: Javadoc) {
+    excludes = ['**/*.kt']
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+
+    if (JavaVersion.current().isJava8Compatible()) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
 }
 
 // Optional javadoc
@@ -149,7 +154,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
-//    archives javadocJar // Optional
+    archives javadocJar // Optional
     archives sourcesJar
 }
 

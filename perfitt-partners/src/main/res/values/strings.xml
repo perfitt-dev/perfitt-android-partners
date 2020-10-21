@@ -14,7 +14,9 @@
     <string name="activity_foot_camera_title_left_confirm">왼발 촬영결과</string>
     <string name="activity_foot_camera_title_left_message">왼발을 촬영해주세요.</string>
     <string name="activity_foot_camera_title_right_message">오른발을 촬영해주세요.</string>
-    <string name="activity_foot_camera_inclination">수평을 맞춰주세요.</string>
+    <string name="activity_foot_camera_status_1">수평을 맞춰주세요.</string>
+    <string name="activity_foot_camera_status_2">발이 감지되지 않습니다.</string>
+    <string name="activity_foot_camera_status_3">A4용지를 가이드에 맞춰 주세요.</string>
 
     <!--Permission-->
     <string name="msg_permission_camera">카메라 사용 권한이 필요합니다.</string>

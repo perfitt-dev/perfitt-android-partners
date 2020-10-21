@@ -38,11 +38,15 @@ import android.os.Trace;
 import android.util.Size;
 import android.view.Surface;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
 
 import com.perfitt.android.perfitt_partners.R;
 import com.perfitt.android.perfitt_partners.fragment.CameraConnectionFragment;
@@ -78,6 +82,10 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
     AppCompatImageButton btn_camera, btnZoomIn, btnZoomOut;
+    AppCompatTextView txt_status_sensor, txt_status_foot, txt_status_a4;
+    Guideline guide_validation_top, guide_validation_bottom;
+    FrameLayout container;
+    CameraConnectionFragment testFragment;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -88,6 +96,13 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
         btn_camera = findViewById(R.id.btn_camera);
         btnZoomIn = findViewById(R.id.btn_zoom_in);
         btnZoomOut = findViewById(R.id.btn_zoom_out);
+        txt_status_sensor = findViewById(R.id.txt_status_sensor);
+        txt_status_foot = findViewById(R.id.txt_status_foot);
+        txt_status_a4 = findViewById(R.id.txt_status_a4);
+        guide_validation_bottom = findViewById(R.id.guide_validation_bottom);
+        guide_validation_top = findViewById(R.id.guide_validation_top);
+        container = findViewById(R.id.container);
+
         if (hasPermission()) {
             setFragment();
         } else {
@@ -381,6 +396,7 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
                             getDesiredPreviewFrameSize());
 
             camera2Fragment.setCamera(cameraId);
+            testFragment = camera2Fragment;
             fragment = camera2Fragment;
             btnZoomIn.setOnClickListener(view -> camera2Fragment.setZoomIn());
             btnZoomOut.setOnClickListener(view -> camera2Fragment.setZoomOut());

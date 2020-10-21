@@ -35,6 +35,7 @@ import android.media.ImageReader.OnImageAvailableListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.view.View;
@@ -74,7 +75,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     private static final String TF_OD_API_LABELS_FILE = "dict.txt";
     private static final DetectorMode MODE = DetectorMode.TF_OD_API;
     // Minimum detection confidence to track a detection.
-    private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.5f;
+    private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.95f;
     private static final boolean MAINTAIN_ASPECT = false;
     private static final Size DESIRED_PREVIEW_SIZE = new Size(1280, 720);
     private static final boolean SAVE_PREVIEW_BITMAP = false;
@@ -99,10 +100,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     private MultiBoxTracker tracker;
 
     private BorderedText borderedText;
-    private AppCompatImageView img_circle, img_camera_disable;
+    private AppCompatImageView img_circle, img_camera_disable, guide_test;
     private ConstraintLayout layout_empty;
 
     private SensorManager sensorManager;
+    private boolean isSensor = false, isFoot = false, isValidation = false;
 
     @Override
     public void onPreviewSizeChosen(final Size size, final int rotation) {
@@ -277,18 +279,47 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                         final List<Classifier.Recognition> mappedRecognitions =
                                 new LinkedList<Classifier.Recognition>();
 
+                        runUI(() -> {
+                            if (isSensor) {
+                                if (isFoot) {
+                                    txt_status_sensor.setVisibility(View.INVISIBLE);
+                                    txt_status_foot.setVisibility(View.INVISIBLE);
+                                    txt_status_a4.setVisibility(View.VISIBLE);
+                                } else {
+                                    txt_status_sensor.setVisibility(View.INVISIBLE);
+                                    txt_status_foot.setVisibility(View.VISIBLE);
+                                    txt_status_a4.setVisibility(View.INVISIBLE);
+                                }
+                            } else {
+                                txt_status_sensor.setVisibility(View.VISIBLE);
+                                txt_status_foot.setVisibility(View.INVISIBLE);
+                                txt_status_a4.setVisibility(View.INVISIBLE);
+                            }
+                        });
+
+                        isValidation = false;
                         for (final Classifier.Recognition result : results) {
                             final RectF location = result.getLocation();
                             if (location != null && result.getConfidence() >= minimumConfidence) {
+                                isValidation = true;
+                                Log.d("Dony", "minimumConfidence");
                                 canvas.drawRect(location, paint);
 
                                 cropToFrameTransform.mapRect(location);
 
                                 result.setLocation(location);
                                 mappedRecognitions.add(result);
+
+                                if (isSensor) {
+                                    if (!validationFoot(result)) {
+                                        validationBase(result);
+                                    }
+                                }
                             }
                         }
-
+                        if (!isValidation) {
+                            isFoot = false;
+                        }
                         tracker.trackResults(mappedRecognitions, currTimestamp);
                         trackingOverlay.postInvalidate();
 
@@ -331,15 +362,15 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         img_circle.setY(btn_camera.getY() + yCoord);
 
         if (x < 1.5 && x > -1.5 && y < 1.5 && y > -1.5) {
+            isSensor = true;
             img_camera_disable.setVisibility(View.INVISIBLE);
             btn_camera.setVisibility(View.VISIBLE);
             btn_camera.setClickable(true);
-            layout_empty.setVisibility(View.INVISIBLE);
         } else {
+            isSensor = false;
             img_camera_disable.setVisibility(View.VISIBLE);
             btn_camera.setVisibility(View.INVISIBLE);
             btn_camera.setClickable(false);
-            layout_empty.setVisibility(View.VISIBLE);
         }
     }
 
@@ -378,6 +409,68 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     private void unregisterListener() {
         btn_camera.setEnabled(false);
         sensorManager.unregisterListener(this);
+    }
+
+    private boolean validationFoot(Classifier.Recognition result) {
+        if (result.getTitle().equals("b'foot'")) {
+            isFoot = true;
+            Log.d("Dony", "Find Foot");
+            return true;
+        } else {
+            isFoot = false;
+            return false;
+        }
+    }
+
+    private void validationBase(Classifier.Recognition result) {
+        if (result.getTitle().equals("b'base'")) {
+            Log.d("Dony", "Find Base");
+            Log.d("Dony", "top Y: " + guide_validation_top.getY());
+            Log.d("Dony", "bottom Y: " + guide_validation_bottom.getY());
+            final RectF detectionScreenRect = new RectF();
+            tracker.frameToCanvasMatrix.mapRect(detectionScreenRect, result.getLocation());
+
+            float point = detectionScreenRect.top;
+            Log.d("Dony", "point : " + point);
+            if (guide_validation_top.getY() <= point && guide_validation_bottom.getY() >= point) {
+                txt_status_sensor.setVisibility(View.INVISIBLE);
+                txt_status_foot.setVisibility(View.INVISIBLE);
+                txt_status_a4.setVisibility(View.INVISIBLE);
+                Toast.makeText(this, "버튼을 눌러 촬영해주세요.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void runUI(Runnable runnable) {
+        runOnUiThread(runnable);
+    }
+
+    public boolean chkTouchInside(View view, int x, int y) {
+
+        int[] location = new int[2];
+
+        view.getLocationOnScreen(location);
+
+        if (x >= location[0]) {
+
+            if (x <= location[0] + view.getWidth()) {
+
+                if (y >= location[1]) {
+
+                    if (y <= location[1] + view.getHeight()) {
+
+                        return true;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return false;
+
     }
 
 }
