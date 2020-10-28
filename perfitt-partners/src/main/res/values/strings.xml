@@ -6,6 +6,17 @@
     <string name="term_close">닫기</string>
     <string name="term_retake">재촬영</string>
     <string name="term_ok">확인</string>
+    <string name="term_gender">성별</string>
+    <string name="term_male">남성</string>
+    <string name="term_female">여성</string>
+    <string name="term_unisex">남녀공용</string>
+    <string name="term_shoe_size_select">주로 신는 사이즈</string>
+    <string name="term_name">이름</string>
+
+    <!--Message -->
+    <string name="msg_dialog_update_foot_profile_caption">주로 신는 사이즈 기준으로 펄핏 추천 사이즈가 변경되오니, 정확하게 입력 부탁드립니다.</string>
+    <string name="msg_dialog_update_foot_profile_title">내 발 정보 편집하기</string>
+    <string name="msg_dialog_empty_avg_size">주로 신는 사이즈를 입력해주세요.</string>
 
     <!--Foot Camera-->
     <string name="activity_foot_camera_title_left">왼발 촬영하기</string>
@@ -15,8 +26,8 @@
     <string name="activity_foot_camera_title_left_message">왼발을 촬영해주세요.</string>
     <string name="activity_foot_camera_title_right_message">오른발을 촬영해주세요.</string>
     <string name="activity_foot_camera_status_1">수평을 맞춰주세요.</string>
-    <string name="activity_foot_camera_status_2">발이 감지되지 않습니다.</string>
-    <string name="activity_foot_camera_status_3">A4용지를 가이드에 맞춰 주세요.</string>
+    <string name="activity_foot_camera_status_2">발이 탐지되지 않았습니다.</string>
+    <string name="activity_foot_camera_status_3">A4 상단 모서리가 가이드 선과 닿지 않습니다.</string>
 
     <!--Permission-->
     <string name="msg_permission_camera">카메라 사용 권한이 필요합니다.</string>

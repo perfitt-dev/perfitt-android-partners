@@ -58,26 +58,28 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                         }
                     }
                     val handler = Handler()
-                    Thread(Runnable {
-                        val sourceType = packageManager.getPackageInfo(packageName, 0).versionName + "_" + Build.MODEL + "_android-" + Build.VERSION.SDK_INT
-                        val response = APIController.instance.requestUsers(PerfittPartners.instance.apiKey, leftData, rightData, sourceType) { errorCode, errorMessage ->
-                            handler.post {
-                                progressDialog?.dismiss()
-                                Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-
-                        response?.let { confirm ->
-                            handler.post {
-                                progressDialog?.dismiss()
-                                JSONObject(confirm).getString("id").let { id ->
-                                    PerfittPartners.instance.confirmListener?.onConfirm("javascript:callback('$id')")
-                                    finish()
+                    DialogUtil.instance.showUpdateFootProfile(this@FootCameraConfirmActivity, null, null, null) dialog@{ name, gender, averageSize ->
+                        Thread(Runnable {
+                            val sourceType = packageManager.getPackageInfo(packageName, 0).versionName + "_" + Build.MODEL + "_android-" + Build.VERSION.SDK_INT
+                            val response = APIController.instance.requestUsers(PerfittPartners.instance.apiKey, leftData, rightData, sourceType, averageSize, name, gender) { errorCode, errorMessage ->
+                                handler.post {
+                                    progressDialog?.dismiss()
+                                    Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
                                 }
                             }
-                        }
 
-                    }).start()
+                            response?.let { confirm ->
+                                handler.post {
+                                    progressDialog?.dismiss()
+                                    JSONObject(confirm).getString("id").let { id ->
+                                        PerfittPartners.instance.confirmListener?.onConfirm("javascript:callback('$id')")
+                                        finish()
+                                    }
+                                }
+                            }
+
+                        }).start()
+                    }
                 }
             }
         }

@@ -173,11 +173,15 @@ class APIController {
         return null
     }
 
-    fun requestUsers(apiKey: String, leftImage: String, rightImage: String, sourceType: String, errorUnit: ((errorCode: Int, errorMsg: String) -> Unit)): String? {
+    fun requestUsers(apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize:Int, nickname:String?, gender:String?,
+                     errorUnit: ((errorCode: Int, errorMsg: String) -> Unit)): String? {
         return requestPost("$USERS?apiKey=$apiKey", JSONObject().apply {
             put("leftImage", leftImage)
             put("rightImage", rightImage)
             put("sourceType", sourceType)
+            put("averageSize", averageSize)
+            put("nickname", nickname)
+            put("gender", gender)
         }, errorUnit)
     }
 
@@ -188,7 +192,7 @@ class APIController {
     companion object {
         val instance: APIController by lazy { Holder.INSTANCE }
         private const val BASE_URL = "https://dev-api.perfitt.io"
-        private const val USERS = "$BASE_URL/core/users"
+        private const val USERS = "$BASE_URL/core/v2/users"
         const val TUTORIAL_URL = "https://service.perfitt.io/howtomeasure"
     }
 }

@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.kezong.fat-aar'
 
 group = rootProject.ext.packageName
 version = rootProject.ext.libraryVersionName
@@ -67,14 +68,14 @@ bintray {
         name = project.name// module name
         userOrg = user
         // An optional organization name when the repo belongs to one of the user's orgs
-        desc = 'Bintray sample library' // Optional
+        desc = 'Perfitt partners library' // Optional
         licenses = ['Apache-2.0']
 
         vcsUrl = rootProject.ext.githubRepoUrl
         websiteUrl = rootProject.ext.websiteUrl
         // issueTrackerUrl = '' // Optional
 
-        labels = ['aar', 'android', 'example'] // Optional
+        labels = ['perfitt', 'perfitt partners', 'perfitt ai'] // Optional
         publicDownloadNumbers = true
 
         githubRepo = rootProject.ext.githubRepo // Optional Github repository
@@ -120,14 +121,16 @@ android {
 
 }
 
+configurations.embed.transitive = true
+
 dependencies {
-    api fileTree(dir: "libs", include: ["*.jar"])
-    api rootProject.ext.kotlin
-    api rootProject.ext.ktx
-    api rootProject.ext.appcompat
-    api rootProject.ext.constraintlayout
-    api rootProject.ext.tensorLite
-    api rootProject.ext.tensorMeta
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation rootProject.ext.kotlin
+    implementation rootProject.ext.ktx
+    implementation rootProject.ext.appcompat
+    implementation rootProject.ext.constraintlayout
+    embed rootProject.ext.tensorLite
+    embed rootProject.ext.tensorMeta
 }
 
 // JCenter publish

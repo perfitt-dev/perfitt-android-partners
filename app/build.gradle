@@ -15,8 +15,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.libraryVersionName
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -37,11 +35,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(':perfitt-partners')
-//    implementation rootProject.ext.kotlin
-//    implementation rootProject.ext.ktx
-//    implementation rootProject.ext.appcompat
-//    implementation rootProject.ext.constraintlayout
-//    implementation rootProject.ext.tensorLite
-//    implementation rootProject.ext.tensorMeta
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation rootProject.ext.appcompat
+    implementation rootProject.ext.constraintlayout
+    implementation 'com.perfitt.android:perfitt-partners:1.0.0-alpha51'
 }

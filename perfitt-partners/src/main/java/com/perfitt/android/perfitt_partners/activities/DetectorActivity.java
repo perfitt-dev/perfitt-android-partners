@@ -104,7 +104,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     private ConstraintLayout layout_empty;
 
     private SensorManager sensorManager;
-    private boolean isSensor = false, isFoot = false, isValidation = false;
+    private boolean isSensor = false;
 
     @Override
     public void onPreviewSizeChosen(final Size size, final int rotation) {
@@ -279,29 +279,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                         final List<Classifier.Recognition> mappedRecognitions =
                                 new LinkedList<Classifier.Recognition>();
 
-                        runUI(() -> {
-                            if (isSensor) {
-                                if (isFoot) {
-                                    txt_status_sensor.setVisibility(View.INVISIBLE);
-                                    txt_status_foot.setVisibility(View.INVISIBLE);
-                                    txt_status_a4.setVisibility(View.VISIBLE);
-                                } else {
-                                    txt_status_sensor.setVisibility(View.INVISIBLE);
-                                    txt_status_foot.setVisibility(View.VISIBLE);
-                                    txt_status_a4.setVisibility(View.INVISIBLE);
-                                }
-                            } else {
-                                txt_status_sensor.setVisibility(View.VISIBLE);
-                                txt_status_foot.setVisibility(View.INVISIBLE);
-                                txt_status_a4.setVisibility(View.INVISIBLE);
-                            }
-                        });
-
-                        isValidation = false;
                         for (final Classifier.Recognition result : results) {
                             final RectF location = result.getLocation();
                             if (location != null && result.getConfidence() >= minimumConfidence) {
-                                isValidation = true;
                                 Log.d("Dony", "minimumConfidence");
                                 canvas.drawRect(location, paint);
 
@@ -309,31 +289,57 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
                                 result.setLocation(location);
                                 mappedRecognitions.add(result);
-
-                                if (isSensor) {
-                                    if (!validationFoot(result)) {
-                                        validationBase(result);
-                                    }
-                                }
                             }
                         }
-                        if (!isValidation) {
-                            isFoot = false;
+
+                        boolean isFoot = false, isBase = false;
+
+                        for (final Classifier.Recognition result : mappedRecognitions) {
+                            if (!isFoot) {
+                                isFoot = validationFoot(result);
+                            }
+                            if (!isBase) {
+                                isBase = validationBase(result);
+                            }
                         }
+
+                        if (isSensor) {
+                            runUI(() -> {
+                                txt_status_sensor.setVisibility(View.INVISIBLE);
+                                txt_status_foot.setVisibility(View.INVISIBLE);
+                                txt_status_a4.setVisibility(View.INVISIBLE);
+                            });
+                            if (!isBase) {
+                                runUI(() -> {
+                                    txt_status_a4.setVisibility(View.VISIBLE);
+                                    txt_status_a4.setText(getString(R.string.activity_foot_camera_status_3));
+                                });
+                            } else if (!isFoot) {
+                                runUI(() -> txt_status_foot.setVisibility(View.VISIBLE));
+                            } else {
+                                runUI(() -> {
+                                    txt_status_a4.setVisibility(View.VISIBLE);
+                                    txt_status_a4.setText("버튼을 눌러 촬영해주세요.");
+                                });
+                            }
+                        } else {
+                            runUI(() -> {
+                                txt_status_sensor.setVisibility(View.VISIBLE);
+                                txt_status_foot.setVisibility(View.INVISIBLE);
+                                txt_status_a4.setVisibility(View.INVISIBLE);
+                            });
+                        }
+
                         tracker.trackResults(mappedRecognitions, currTimestamp);
                         trackingOverlay.postInvalidate();
 
                         computingDetection = false;
 
-                        runOnUiThread(
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        showFrameInfo(previewWidth + "x" + previewHeight);
-                                        showCropInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
-                                        showInference(lastProcessingTimeMs + "ms");
-                                    }
-                                });
+//                        runUI(() -> {
+//                            showFrameInfo(previewWidth + "x" + previewHeight);
+//                            showCropInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
+//                            showInference(lastProcessingTimeMs + "ms");
+//                        });
                     }
                 });
     }
@@ -413,16 +419,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
     private boolean validationFoot(Classifier.Recognition result) {
         if (result.getTitle().equals("b'foot'")) {
-            isFoot = true;
             Log.d("Dony", "Find Foot");
             return true;
         } else {
-            isFoot = false;
             return false;
         }
     }
 
-    private void validationBase(Classifier.Recognition result) {
+    private boolean validationBase(Classifier.Recognition result) {
         if (result.getTitle().equals("b'base'")) {
             Log.d("Dony", "Find Base");
             Log.d("Dony", "top Y: " + guide_validation_top.getY());
@@ -433,11 +437,12 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             float point = detectionScreenRect.top;
             Log.d("Dony", "point : " + point);
             if (guide_validation_top.getY() <= point && guide_validation_bottom.getY() >= point) {
-                txt_status_sensor.setVisibility(View.INVISIBLE);
-                txt_status_foot.setVisibility(View.INVISIBLE);
-                txt_status_a4.setVisibility(View.INVISIBLE);
-                Toast.makeText(this, "버튼을 눌러 촬영해주세요.", Toast.LENGTH_SHORT).show();
+                return true;
+            } else {
+                return false;
             }
+        } else {
+            return false;
         }
     }
 

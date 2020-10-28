@@ -294,4 +294,10 @@
         <item name="android:fontFamily">@font/cabin_regular</item>
         <item name="android:textColor">@color/text_body</item>
     </style>
+
+    <!--Radio-->
+    <style name="radio" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textAppearance">@style/body_2</item>
+        <item name="android:colorControlActivated">@color/color_primary</item>
+    </style>
 </resources>
