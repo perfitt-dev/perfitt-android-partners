@@ -13,6 +13,7 @@ class APIController {
 
     private fun requestGet(_url: String?, _params: ContentValues?): String? {
         var urlConn: HttpURLConnection? = null
+        Log.d("Dony", "url:$_url")
 
         // URL 뒤에 붙여서 보낼 파라미터.
         val sbParams = StringBuffer()
@@ -92,9 +93,9 @@ class APIController {
         return null
     }
 
-    private fun requestPost(_url: String?, _params: JSONObject?, errorUnit: ((errorCode: Int, errorMsg: String) -> Unit)): String? {
+    private fun requestPost(_url: String?, _params: JSONObject?, errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)): String? {
         var urlConn: HttpURLConnection? = null
-
+        Log.d("Dony", "url:$_url")
         // URL 뒤에 붙여서 보낼 파라미터.
         val sbParams = StringBuffer()
         /**
@@ -140,7 +141,7 @@ class APIController {
 //                }
 //                errorUnit(urlConn.responseCode, urlConn.responseMessage)
                 Log.d("Dony", "error:$error")
-                errorUnit(urlConn.responseCode, JSONObject(error).getString("message"))
+                errorUnit(urlConn.responseCode, JSONObject(error).getString("type"), JSONObject(error).getString("message"))
 
                 return null
             }
@@ -159,23 +160,39 @@ class APIController {
             }
             return page
         } catch (e: MalformedURLException) { // for URL.
-            errorUnit(400, "MalformedURLException${e.toString()}")
+            errorUnit(400, "", "MalformedURLException${e.toString()}")
             e.printStackTrace()
         } catch (e: IOException) { // for openConnection().
-            errorUnit(400, "IOException${e.toString()}")
+            errorUnit(400, "", "IOException${e.toString()}")
             e.printStackTrace()
         } catch (e: Exception) {
             e.printStackTrace()
-            errorUnit(400, "Exception${e.toString()}")
+            errorUnit(400, "", "Exception${e.toString()}")
         } finally {
             urlConn?.disconnect()
         }
         return null
     }
 
-    fun requestUsers(apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize:Int, nickname:String?, gender:String?,
-                     errorUnit: ((errorCode: Int, errorMsg: String) -> Unit)): String? {
-        return requestPost("$USERS?apiKey=$apiKey", JSONObject().apply {
+    fun requestUsersA4(
+        apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize: Int, nickname: String?, gender: String?,
+        errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)
+    ): String? {
+        return requestPost("$USERS_A4?apiKey=$apiKey", JSONObject().apply {
+            put("leftImage", leftImage)
+            put("rightImage", rightImage)
+            put("sourceType", sourceType)
+            put("averageSize", averageSize)
+            put("nickname", nickname)
+            put("gender", gender)
+        }, errorUnit)
+    }
+
+    fun requestUsersKit(
+        apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize: Int, nickname: String?, gender: String?,
+        errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)
+    ): String? {
+        return requestPost("$USERS_KIT?apiKey=$apiKey", JSONObject().apply {
             put("leftImage", leftImage)
             put("rightImage", rightImage)
             put("sourceType", sourceType)
@@ -192,7 +209,8 @@ class APIController {
     companion object {
         val instance: APIController by lazy { Holder.INSTANCE }
         private const val BASE_URL = "https://dev-api.perfitt.io"
-        private const val USERS = "$BASE_URL/core/v2/users"
+        private const val USERS_KIT = "$BASE_URL/core/v2/ml1/users"
+        private const val USERS_A4 = "$BASE_URL/core/v2/ml2/users"
         const val TUTORIAL_URL = "https://service.perfitt.io/howtomeasure"
     }
 }

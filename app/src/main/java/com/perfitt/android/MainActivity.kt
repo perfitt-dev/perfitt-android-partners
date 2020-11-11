@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             addJavascriptInterface(PerfittPartners.instance.getJavascriptInterface(this@MainActivity), PerfittPartners.instance.getJavascriptInterfaceName())
             loadUrl("https://perfitt-static-files.s3.ap-northeast-2.amazonaws.com/resources/clutter/test.html")
         }
-
+        PerfittPartners.instance.initialize(this, "PARTNERS_TEST_KEY")
         PerfittPartners.instance.onConfirm(object : ConfirmListener {
             override fun onConfirm(url: String) {
                 web_view.loadUrl(url)

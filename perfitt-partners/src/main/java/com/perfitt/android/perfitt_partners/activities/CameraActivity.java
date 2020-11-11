@@ -59,6 +59,7 @@ import java.nio.ByteBuffer;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public abstract class CameraActivity extends AppCompatActivity implements OnImageAvailableListener, Camera.PreviewCallback {
     protected int viewType = TYPE_FOOT_RIGHT;
+    public String parentType = "";
     private String fileName = "";
     public static int TYPE_FOOT_RIGHT = 1001;
     public static int TYPE_FOOT_LEFT = 1002;
@@ -411,10 +412,12 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
                     } else {
                         fileName = FileUtil.FILE_NAME_FOOT_LEFT;
                     }
+
                     Intent intent = new Intent(this, FootCameraConfirmActivity.class);
                     intent.putExtra("currentZoom", camera2Fragment.getZoomLevel());
                     intent.putExtra("type", viewType);
                     intent.putExtra("fileName", fileName);
+                    intent.putExtra("parentType", parentType);
                     startActivity(intent);
                     finish();
                 });

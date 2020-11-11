@@ -65,17 +65,17 @@ import java.util.List;
  * objects.
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class DetectorActivity extends CameraActivity implements OnImageAvailableListener, SensorEventListener {
+public class KitDetectorActivity extends CameraActivity implements OnImageAvailableListener, SensorEventListener {
     private static final Logger LOGGER = new Logger();
 
     // Configuration values for the prepackaged SSD model.
     private static final int TF_OD_API_INPUT_SIZE = 320;
     private static final boolean TF_OD_API_IS_QUANTIZED = true;
-    private static final String TF_OD_API_MODEL_FILE = "model.tflite";
-    private static final String TF_OD_API_LABELS_FILE = "dict.txt";
+    private static final String TF_OD_API_MODEL_FILE = "kit/model.tflite";
+    private static final String TF_OD_API_LABELS_FILE = "kit/dict.txt";
     private static final DetectorMode MODE = DetectorMode.TF_OD_API;
     // Minimum detection confidence to track a detection.
-    private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.95f;
+    private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.2f;
     private static final boolean MAINTAIN_ASPECT = false;
     private static final Size DESIRED_PREVIEW_SIZE = new Size(1280, 720);
     private static final boolean SAVE_PREVIEW_BITMAP = false;
@@ -175,6 +175,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onNewIntent(getIntent());
+        parentType = LandingActivity.KIT;
         if (getSupportActionBar() != null) {
             int titleRes;
             if (viewType == TYPE_FOOT_RIGHT) {
@@ -184,6 +185,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             }
             getSupportActionBar().setTitle(titleRes);
         }
+        Toast.makeText(this, "키트 버전", Toast.LENGTH_SHORT).show();
         PreferenceUtil pref = PreferenceUtil.Companion.instance(this);
 
         if (!pref.isFirstAppTutorial()) {
@@ -292,16 +294,16 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                             }
                         }
 
-                        boolean isFoot = false, isBase = false;
-
-                        for (final Classifier.Recognition result : mappedRecognitions) {
-                            if (!isFoot) {
-                                isFoot = validationFoot(result);
-                            }
-                            if (!isBase) {
-                                isBase = validationBase(result);
-                            }
-                        }
+//                        boolean isFoot = false, isBase = false;
+//
+//                        for (final Classifier.Recognition result : mappedRecognitions) {
+//                            if (!isFoot) {
+//                                isFoot = validationFoot(result);
+//                            }
+//                            if (!isBase) {
+//                                isBase = validationBase(result);
+//                            }
+//                        }
 
                         if (isSensor) {
                             runUI(() -> {
@@ -309,19 +311,19 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                                 txt_status_foot.setVisibility(View.INVISIBLE);
                                 txt_status_a4.setVisibility(View.INVISIBLE);
                             });
-                            if (!isBase) {
-                                runUI(() -> {
-                                    txt_status_a4.setVisibility(View.VISIBLE);
-                                    txt_status_a4.setText(getString(R.string.activity_foot_camera_status_3));
-                                });
-                            } else if (!isFoot) {
-                                runUI(() -> txt_status_foot.setVisibility(View.VISIBLE));
-                            } else {
-                                runUI(() -> {
-                                    txt_status_a4.setVisibility(View.VISIBLE);
-                                    txt_status_a4.setText("버튼을 눌러 촬영해주세요.");
-                                });
-                            }
+//                            if (!isBase) {
+//                                runUI(() -> {
+//                                    txt_status_a4.setVisibility(View.VISIBLE);
+//                                    txt_status_a4.setText(getString(R.string.activity_foot_camera_status_3));
+//                                });
+//                            } else if (!isFoot) {
+//                                runUI(() -> txt_status_foot.setVisibility(View.VISIBLE));
+//                            } else {
+                            runUI(() -> {
+                                txt_status_a4.setVisibility(View.VISIBLE);
+                                txt_status_a4.setText("버튼을 눌러 촬영해주세요.");
+                            });
+//                            }
                         } else {
                             runUI(() -> {
                                 txt_status_sensor.setVisibility(View.VISIBLE);

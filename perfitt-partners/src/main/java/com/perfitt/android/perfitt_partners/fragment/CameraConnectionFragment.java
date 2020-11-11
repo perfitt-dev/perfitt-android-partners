@@ -738,9 +738,10 @@ public class CameraConnectionFragment extends Fragment {
             outputSurfaces.add(reader.getSurface());
             outputSurfaces.add(new Surface(textureView.getSurfaceTexture()));
 
-            final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
+            captureBuilder.set(CaptureRequest.SCALER_CROP_REGION, getZoomRect(zoomLevel));
 
             // Orientation
             int rotation = ((Activity) context).getWindowManager().getDefaultDisplay().getRotation();
@@ -769,15 +770,11 @@ public class CameraConnectionFragment extends Fragment {
                         //해당 이미지의 경우 90를 회전 시켜준다.
 
                         //새롭게 만들어진 bitmap으로 이미지 파일을 생성한다.
-                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+                        Bitmap bitmap2 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                         byte[] front_picture = stream.toByteArray();
-
-                        bytes = front_picture;
                         save(front_picture);
-//                        save(bytes);
-
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {

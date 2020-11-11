@@ -23,6 +23,7 @@ import java.io.File
 
 
 class FootCameraConfirmActivity : AppCompatActivity() {
+    var parentType = ""
     var type = 0
     var progressDialog: AlertDialog? = null
     var currentZoom: Int = 0
@@ -32,13 +33,20 @@ class FootCameraConfirmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foot_camera_confirm)
         onNewIntent(intent)
-        supportActionBar?.setTitle(if (type == DetectorActivity.TYPE_FOOT_RIGHT) R.string.activity_foot_camera_title_right_confirm else R.string.activity_foot_camera_title_left_confirm)
+        supportActionBar?.setTitle(if (type == A4DetectorActivity.TYPE_FOOT_RIGHT) R.string.activity_foot_camera_title_right_confirm else R.string.activity_foot_camera_title_left_confirm)
         btn_next.setOnClickListener {
-            if (type == DetectorActivity.TYPE_FOOT_RIGHT) {
-                startActivity(Intent(this, DetectorActivity::class.java).apply {
-                    putExtra("type", DetectorActivity.TYPE_FOOT_LEFT)
-                    putExtra("currentZoom", currentZoom)
-                })
+            if (type == A4DetectorActivity.TYPE_FOOT_RIGHT) {
+                if (parentType == LandingActivity.A4) {
+                    startActivity(Intent(this, A4DetectorActivity::class.java).apply {
+                        putExtra("type", A4DetectorActivity.TYPE_FOOT_LEFT)
+                        putExtra("currentZoom", currentZoom)
+                    })
+                } else {
+                    startActivity(Intent(this, KitDetectorActivity::class.java).apply {
+                        putExtra("type", KitDetectorActivity.TYPE_FOOT_LEFT)
+                        putExtra("currentZoom", currentZoom)
+                    })
+                }
                 finish()
             } else {
                 progressDialog = DialogUtil.instance.showProgressMessage(this@FootCameraConfirmActivity, getString(R.string.term_progress_size))
@@ -61,18 +69,26 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                     DialogUtil.instance.showUpdateFootProfile(this@FootCameraConfirmActivity, null, null, null) dialog@{ name, gender, averageSize ->
                         Thread(Runnable {
                             val sourceType = packageManager.getPackageInfo(packageName, 0).versionName + "_" + Build.MODEL + "_android-" + Build.VERSION.SDK_INT
-                            val response = APIController.instance.requestUsers(PerfittPartners.instance.apiKey, leftData, rightData, sourceType, averageSize, name, gender) { errorCode, errorMessage ->
-                                handler.post {
-                                    progressDialog?.dismiss()
-                                    Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
+                            val response = if (parentType == LandingActivity.A4) {
+                                APIController.instance.requestUsersA4(PerfittPartners.API_KEY, leftData, rightData, sourceType, averageSize, name, gender) { errorCode, errorType, errorMessage ->
+                                    handler.post {
+                                        progressDialog?.dismiss()
+                                        Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            } else {
+                                APIController.instance.requestUsersKit(PerfittPartners.API_KEY, leftData, rightData, sourceType, averageSize, name, gender) { errorCode, errorType, errorMessage ->
+                                    handler.post {
+                                        progressDialog?.dismiss()
+                                        Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
                             }
-
                             response?.let { confirm ->
                                 handler.post {
                                     progressDialog?.dismiss()
                                     JSONObject(confirm).getString("id").let { id ->
-                                        PerfittPartners.instance.confirmListener?.onConfirm("javascript:callback('$id')")
+                                        PerfittPartners.instance.confirmListener?.onConfirm("javascript:PERFITT_CALLBACK('$id')")
                                         finish()
                                     }
                                 }
@@ -85,10 +101,17 @@ class FootCameraConfirmActivity : AppCompatActivity() {
         }
 
         btn_retake.setOnClickListener {
-            startActivity(Intent(this, DetectorActivity::class.java).apply {
-                putExtra("type", this@FootCameraConfirmActivity.type)
-                putExtra("currentZoom", currentZoom)
-            })
+            if (parentType == LandingActivity.A4) {
+                startActivity(Intent(this, A4DetectorActivity::class.java).apply {
+                    putExtra("type", this@FootCameraConfirmActivity.type)
+                    putExtra("currentZoom", currentZoom)
+                })
+            } else {
+                startActivity(Intent(this, KitDetectorActivity::class.java).apply {
+                    putExtra("type", this@FootCameraConfirmActivity.type)
+                    putExtra("currentZoom", currentZoom)
+                })
+            }
             finish()
         }
     }
@@ -110,6 +133,7 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                 currentZoom = zoom
             }
             type = it.getIntExtra("type", 0)
+            parentType = it.getStringExtra("parentType")
         }
     }
 }

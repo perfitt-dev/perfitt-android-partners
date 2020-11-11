@@ -10,8 +10,23 @@ class PerfittPartnersJSInterface(private val context: Context) {
     @JavascriptInterface
     fun runSDK(apiKey: String) {
         context.startActivity(Intent(context, LandingActivity::class.java).apply {
-            putExtra(LandingActivity.LANDING_TYPE, LandingActivity.CAMERA)
-            putExtra(LandingActivity.API_KEY, apiKey)
+            //TODO Test
+//            putExtra(LandingActivity.LANDING_TYPE, LandingActivity.A4)
+            putExtra(LandingActivity.LANDING_TYPE, LandingActivity.KIT)
+        })
+    }
+
+    @JavascriptInterface
+    fun runSDKkit() {
+        context.startActivity(Intent(context, LandingActivity::class.java).apply {
+            putExtra(LandingActivity.LANDING_TYPE, LandingActivity.KIT)
+        })
+    }
+
+    @JavascriptInterface
+    fun runSDKa4() {
+        context.startActivity(Intent(context, LandingActivity::class.java).apply {
+            putExtra(LandingActivity.LANDING_TYPE, LandingActivity.A4)
         })
     }
 

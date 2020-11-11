@@ -29,6 +29,7 @@ import org.tensorflow.lite.support.metadata.MetadataExtractor;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -119,7 +120,9 @@ public class TFLiteObjectDetectionAPIModel implements Classifier {
         MappedByteBuffer modelFile = loadModelFile(assetManager, modelFilename);
         MetadataExtractor metadata = new MetadataExtractor(modelFile);
         BufferedReader br =
-                new BufferedReader(new InputStreamReader(metadata.getAssociatedFile(labelFilename)));
+                new BufferedReader(new InputStreamReader(assetManager.open(labelFilename)));
+//        BufferedReader br =
+//                new BufferedReader(new InputStreamReader(metadata.getAssociatedFile(labelFilename)));
         String line;
         while ((line = br.readLine()) != null) {
             if (!line.equals("background")) {

@@ -10,7 +10,7 @@
 
     <application>
         <activity
-            android:name=".activities.DetectorActivity"
+            android:name=".activities.A4DetectorActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -23,6 +23,9 @@
                     android:scheme="perfittpartners" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.KitDetectorActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.FootCameraConfirmActivity"
             android:screenOrientation="portrait" />

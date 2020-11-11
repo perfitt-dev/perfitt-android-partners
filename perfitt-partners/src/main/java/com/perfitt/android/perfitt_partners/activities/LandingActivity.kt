@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.perfitt.android.perfitt_partners.R
-import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.utils.PermissionUtil
 
 class LandingActivity : AppCompatActivity() {
@@ -19,12 +18,12 @@ class LandingActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         intent?.let {
             when (it.getStringExtra(LANDING_TYPE)) {
-                CAMERA -> {
+                A4 -> {
                     PermissionUtil.instance
                         .setMessage(getString(R.string.msg_permission_camera))
                         .setPermissions(arrayListOf(Manifest.permission.CAMERA))
                         .onGranted {
-                            startActivity(Intent(this, DetectorActivity::class.java))
+                            startActivity(Intent(this, A4DetectorActivity::class.java))
                             finish()
                         }
                         .onDenied {
@@ -35,9 +34,22 @@ class LandingActivity : AppCompatActivity() {
                         }
                         .checkToPermissions(this as AppCompatActivity)
                 }
-            }
-            it.getStringExtra(API_KEY)?.let { apiKey ->
-                PerfittPartners.instance.apiKey = apiKey
+                KIT -> {
+                    PermissionUtil.instance
+                        .setMessage(getString(R.string.msg_permission_camera))
+                        .setPermissions(arrayListOf(Manifest.permission.CAMERA))
+                        .onGranted {
+                            startActivity(Intent(this, KitDetectorActivity::class.java))
+                            finish()
+                        }
+                        .onDenied {
+                            finish()
+                        }
+                        .onSystemPermissionSettings {
+                            finish()
+                        }
+                        .checkToPermissions(this as AppCompatActivity)
+                }
             }
         }
     }
@@ -55,7 +67,7 @@ class LandingActivity : AppCompatActivity() {
     companion object {
         const val LANDING_TYPE = "landing_type"
         const val PARAMS = "params"
-        const val CAMERA = "camera"
-        const val API_KEY = "api_key"
+        const val A4 = "a4"
+        const val KIT = "kit"
     }
 }

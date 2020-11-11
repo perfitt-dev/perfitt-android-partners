@@ -6,7 +6,6 @@ import com.perfitt.android.perfitt_partners.utils.PerfittPartnersJSInterface
 
 class PerfittPartners {
     var confirmListener: ConfirmListener? = null
-    var apiKey = ""
     var context: Context? = null
 
     /**
@@ -14,7 +13,7 @@ class PerfittPartners {
      * @param context your Perfitt Partners API Key
      */
     fun initialize(context: Context, apiKey: String) {
-        this.apiKey = apiKey
+        API_KEY = apiKey
         this.context = context
     }
 
@@ -36,5 +35,6 @@ class PerfittPartners {
 
     companion object {
         val instance: PerfittPartners by lazy { Holder.INSTANCE }
+        var API_KEY = ""
     }
 }

@@ -7,7 +7,7 @@ ext {
     ext.kotlin_version = "1.3.72"
 
     versionCode = 1
-    libraryVersionName = '1.0.0-alpha52'
+    libraryVersionName = '1.0.0-alpha73'
 
     // Bintray setting info
     repositoryName = 'perfittPartners'
