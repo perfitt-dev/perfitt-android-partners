@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.webkit.JavascriptInterface
 import com.perfitt.android.perfitt_partners.activities.LandingActivity
+import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 
 class PerfittPartnersJSInterface(private val context: Context) {
 
@@ -17,14 +18,20 @@ class PerfittPartnersJSInterface(private val context: Context) {
     }
 
     @JavascriptInterface
-    fun runSDKkit() {
+    fun runSDKkit(customerId: String?) {
+        customerId?.let {
+            PerfittPartners.CUSTOMER_ID = it
+        }
         context.startActivity(Intent(context, LandingActivity::class.java).apply {
             putExtra(LandingActivity.LANDING_TYPE, LandingActivity.KIT)
         })
     }
 
     @JavascriptInterface
-    fun runSDKa4() {
+    fun runSDKa4(customerId: String?) {
+        customerId?.let {
+            PerfittPartners.CUSTOMER_ID = it
+        }
         context.startActivity(Intent(context, LandingActivity::class.java).apply {
             putExtra(LandingActivity.LANDING_TYPE, LandingActivity.A4)
         })

@@ -1,5 +1,0 @@
-background
-triagle_left
-base
-triangle_right
-foot

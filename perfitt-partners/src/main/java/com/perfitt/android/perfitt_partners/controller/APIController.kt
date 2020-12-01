@@ -175,7 +175,7 @@ class APIController {
     }
 
     fun requestUsersA4(
-        apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize: Int, nickname: String?, gender: String?,
+        apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize: Int, nickname: String?, gender: String?, customerId: String?,
         errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)
     ): String? {
         return requestPost("$USERS_A4?apiKey=$apiKey", JSONObject().apply {
@@ -185,11 +185,12 @@ class APIController {
             put("averageSize", averageSize)
             put("nickname", nickname)
             put("gender", gender)
+            put("customerId", customerId)
         }, errorUnit)
     }
 
     fun requestUsersKit(
-        apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize: Int, nickname: String?, gender: String?,
+        apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize: Int, nickname: String?, gender: String?, customerId: String?,
         errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)
     ): String? {
         return requestPost("$USERS_KIT?apiKey=$apiKey", JSONObject().apply {
@@ -199,6 +200,7 @@ class APIController {
             put("averageSize", averageSize)
             put("nickname", nickname)
             put("gender", gender)
+            put("customerId", customerId)
         }, errorUnit)
     }
 

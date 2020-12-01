@@ -70,14 +70,14 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                         Thread(Runnable {
                             val sourceType = packageManager.getPackageInfo(packageName, 0).versionName + "_" + Build.MODEL + "_android-" + Build.VERSION.SDK_INT
                             val response = if (parentType == LandingActivity.A4) {
-                                APIController.instance.requestUsersA4(PerfittPartners.API_KEY, leftData, rightData, sourceType, averageSize, name, gender) { errorCode, errorType, errorMessage ->
+                                APIController.instance.requestUsersA4(PerfittPartners.API_KEY, leftData, rightData, sourceType, averageSize, name, gender,PerfittPartners.CUSTOMER_ID) { errorCode, errorType, errorMessage ->
                                     handler.post {
                                         progressDialog?.dismiss()
                                         Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             } else {
-                                APIController.instance.requestUsersKit(PerfittPartners.API_KEY, leftData, rightData, sourceType, averageSize, name, gender) { errorCode, errorType, errorMessage ->
+                                APIController.instance.requestUsersKit(PerfittPartners.API_KEY, leftData, rightData, sourceType, averageSize, name, gender,PerfittPartners.CUSTOMER_ID) { errorCode, errorType, errorMessage ->
                                     handler.post {
                                         progressDialog?.dismiss()
                                         Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()

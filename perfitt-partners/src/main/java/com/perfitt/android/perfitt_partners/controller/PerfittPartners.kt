@@ -36,5 +36,6 @@ class PerfittPartners {
     companion object {
         val instance: PerfittPartners by lazy { Holder.INSTANCE }
         var API_KEY = ""
+        var CUSTOMER_ID = ""
     }
 }

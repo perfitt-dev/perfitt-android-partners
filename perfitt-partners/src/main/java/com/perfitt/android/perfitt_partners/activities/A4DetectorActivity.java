@@ -185,7 +185,6 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
             }
             getSupportActionBar().setTitle(titleRes);
         }
-        Toast.makeText(this, "a4 버전", Toast.LENGTH_SHORT).show();
         PreferenceUtil pref = PreferenceUtil.Companion.instance(this);
 
         if (!pref.isFirstAppTutorial()) {

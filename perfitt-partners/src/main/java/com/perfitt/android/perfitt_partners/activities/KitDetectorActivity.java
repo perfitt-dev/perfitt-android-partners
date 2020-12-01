@@ -75,7 +75,7 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
     private static final String TF_OD_API_LABELS_FILE = "kit/dict.txt";
     private static final DetectorMode MODE = DetectorMode.TF_OD_API;
     // Minimum detection confidence to track a detection.
-    private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.2f;
+    private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.8f;
     private static final boolean MAINTAIN_ASPECT = false;
     private static final Size DESIRED_PREVIEW_SIZE = new Size(1280, 720);
     private static final boolean SAVE_PREVIEW_BITMAP = false;
@@ -185,7 +185,6 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
             }
             getSupportActionBar().setTitle(titleRes);
         }
-        Toast.makeText(this, "키트 버전", Toast.LENGTH_SHORT).show();
         PreferenceUtil pref = PreferenceUtil.Companion.instance(this);
 
         if (!pref.isFirstAppTutorial()) {
@@ -205,6 +204,8 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
         img_circle = findViewById(R.id.img_circle);
         img_camera_disable = findViewById(R.id.img_camera_disable);
         layout_empty = findViewById(R.id.layout_empty);
+        img_divider = findViewById(R.id.top_divider);
+        img_divider.setVisibility(View.GONE);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
     }
 
@@ -284,51 +285,75 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
                         for (final Classifier.Recognition result : results) {
                             final RectF location = result.getLocation();
                             if (location != null && result.getConfidence() >= minimumConfidence) {
-                                Log.d("Dony", "minimumConfidence");
+                                if (result.getTitle().equals("b'foot'") && result.getConfidence() >= 0.9) {
+                                    mappedRecognitions.add(result);
+                                }
+                                if (result.getTitle().equals("b'base'") && result.getConfidence() >= 0.8) {
+                                    mappedRecognitions.add(result);
+                                }
+                                if (result.getTitle().equals("b'left_triangle'") && result.getConfidence() >= 0.86) {
+                                    mappedRecognitions.add(result);
+                                }
+                                if (result.getTitle().equals("b'right_triangle'") && result.getConfidence() >= 0.86) {
+                                    mappedRecognitions.add(result);
+                                }
                                 canvas.drawRect(location, paint);
-
                                 cropToFrameTransform.mapRect(location);
-
                                 result.setLocation(location);
-                                mappedRecognitions.add(result);
                             }
                         }
 
-//                        boolean isFoot = false, isBase = false;
-//
-//                        for (final Classifier.Recognition result : mappedRecognitions) {
-//                            if (!isFoot) {
-//                                isFoot = validationFoot(result);
-//                            }
-//                            if (!isBase) {
-//                                isBase = validationBase(result);
-//                            }
-//                        }
+                        boolean isFoot = false, isBase = false, isTriangleDegree = false;
+                        RectF leftRect = null, rightRect = null;
+                        for (final Classifier.Recognition result : mappedRecognitions) {
+                            if (!isBase) {
+                                isBase = validationBase(result);
+                            }
+                            if (!isFoot) {
+                                isFoot = validationFoot(result);
+                            }
+
+                            if (leftRect == null) {
+                                leftRect = validationTriangleLeft(result);
+                            }
+
+                            if (rightRect == null) {
+                                rightRect = validationTriangleRight(result);
+                            }
+
+                            if (!isTriangleDegree) {
+                                isTriangleDegree = validationTriangle(leftRect, rightRect);
+                            }
+                        }
 
                         if (isSensor) {
                             runUI(() -> {
                                 txt_status_sensor.setVisibility(View.INVISIBLE);
                                 txt_status_foot.setVisibility(View.INVISIBLE);
                                 txt_status_a4.setVisibility(View.INVISIBLE);
+                                txt_status_kit.setVisibility(View.INVISIBLE);
                             });
-//                            if (!isBase) {
-//                                runUI(() -> {
-//                                    txt_status_a4.setVisibility(View.VISIBLE);
-//                                    txt_status_a4.setText(getString(R.string.activity_foot_camera_status_3));
-//                                });
-//                            } else if (!isFoot) {
-//                                runUI(() -> txt_status_foot.setVisibility(View.VISIBLE));
-//                            } else {
-                            runUI(() -> {
-                                txt_status_a4.setVisibility(View.VISIBLE);
-                                txt_status_a4.setText("버튼을 눌러 촬영해주세요.");
-                            });
-//                            }
+                            if (!isBase) {
+                                runUI(() -> {
+                                    txt_status_a4.setText(R.string.activity_foot_camera_kit_validation_base);
+                                    txt_status_a4.setVisibility(View.VISIBLE);
+                                });
+                            } else if (!isFoot) {
+                                runUI(() -> txt_status_foot.setVisibility(View.VISIBLE));
+                            } else if (!isTriangleDegree) {
+                                runUI(() -> txt_status_kit.setVisibility(View.VISIBLE));
+                            } else {
+                                runUI(() -> {
+                                    txt_status_a4.setVisibility(View.VISIBLE);
+                                    txt_status_a4.setText("버튼을 눌러 촬영해주세요.");
+                                });
+                            }
                         } else {
                             runUI(() -> {
                                 txt_status_sensor.setVisibility(View.VISIBLE);
                                 txt_status_foot.setVisibility(View.INVISIBLE);
                                 txt_status_a4.setVisibility(View.INVISIBLE);
+                                txt_status_kit.setVisibility(View.INVISIBLE);
                             });
                         }
 
@@ -388,7 +413,7 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
     }
 
     // Which detection model to use: by default uses Tensorflow Object Detection API frozen
-    // checkpoints.
+// checkpoints.
     private enum DetectorMode {
         TF_OD_API;
     }
@@ -421,7 +446,8 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
     private boolean validationFoot(Classifier.Recognition result) {
         if (result.getTitle().equals("b'foot'")) {
-            Log.d("Dony", "Find Foot");
+            Log.d("Dony", "발 탐지");
+            // 발이 탐지 되었다면
             return true;
         } else {
             return false;
@@ -430,22 +456,84 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
     private boolean validationBase(Classifier.Recognition result) {
         if (result.getTitle().equals("b'base'")) {
-            Log.d("Dony", "Find Base");
-            Log.d("Dony", "top Y: " + guide_validation_top.getY());
-            Log.d("Dony", "bottom Y: " + guide_validation_bottom.getY());
-            final RectF detectionScreenRect = new RectF();
-            tracker.frameToCanvasMatrix.mapRect(detectionScreenRect, result.getLocation());
-
-            float point = detectionScreenRect.top;
-            Log.d("Dony", "point : " + point);
-            if (guide_validation_top.getY() <= point && guide_validation_bottom.getY() >= point) {
-                return true;
-            } else {
-                return false;
-            }
+            Log.d("Dony", "발판 탐지");
+            // 발판이 탐지 되었다면
+            return true;
         } else {
             return false;
         }
+    }
+
+    private RectF validationTriangleLeft(Classifier.Recognition result) {
+        RectF leftRect = null;
+        if (result.getTitle().equals("b'left_triangle'")) {
+            Log.d("Dony", "왼 발 탐지");
+            // 왼쪽 삼각형이 탐지 되었다면
+            leftRect = new RectF();
+            tracker.frameToCanvasMatrix.mapRect(leftRect, result.getLocation());
+        } else {
+            Log.d("Dony", "왼 발 탐지 안됨");
+            runUI(() -> {
+                txt_status_kit.setVisibility(View.VISIBLE);
+                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_empty_left_triangle);
+            });
+        }
+        return leftRect;
+    }
+
+    private RectF validationTriangleRight(Classifier.Recognition result) {
+        RectF rightRect = null;
+        if (result.getTitle().equals("b'right_triangle'")) {
+            Log.d("Dony", "오른발 탐지");
+            // 오른쪽 삼각형이 탐지 되었다면
+            rightRect = new RectF();
+            tracker.frameToCanvasMatrix.mapRect(rightRect, result.getLocation());
+        } else {
+            Log.d("Dony", "오른발 탐지 안됨");
+            runUI(() -> {
+                txt_status_kit.setVisibility(View.VISIBLE);
+                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_empty_right_triangle);
+            });
+        }
+        return rightRect;
+    }
+
+    public boolean validationTriangle(RectF leftRect, RectF rightRect) {
+        if (leftRect == null || rightRect == null) {
+            return false;
+        }
+
+        double bottomSize = (leftRect.left - rightRect.right);
+        double heightSize = (leftRect.top - rightRect.top);
+        double angleResult = Math.atan2(heightSize, bottomSize);
+
+        double degree = (angleResult * 180 / Math.PI);
+
+        Log.d("Dony", "degree: " + degree);
+        Log.d("Dony", "angleResult: " + angleResult);
+        double adjust = 4;
+        if ((degree < adjust && degree > -adjust) || (degree + 180 > -adjust && degree + 180 < adjust) || (degree < 180 && degree > 180 - adjust)) {
+            Log.d("Dony", "success");
+            return true;
+        }
+        Log.d("Dony", "failed");
+
+        if (leftRect.top < rightRect.top) {
+            // 좌표의 각도가 -8 미만 인 경우
+            runUI(() -> {
+                txt_status_kit.setVisibility(View.VISIBLE);
+                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_degree_left_triangle);
+            });
+            return false;
+        } else if (leftRect.top > rightRect.top) {
+            // 좌표의 각도가 8도 초과 인 경우
+            runUI(() -> {
+                txt_status_kit.setVisibility(View.VISIBLE);
+                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_degree_right_triangle);
+            });
+            return false;
+        }
+        return false;
     }
 
     private void runUI(Runnable runnable) {

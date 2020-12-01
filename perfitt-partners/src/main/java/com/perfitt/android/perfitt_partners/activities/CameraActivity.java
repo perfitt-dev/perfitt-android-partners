@@ -44,6 +44,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.Guideline;
 
@@ -81,8 +82,9 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
     private int yRowStride;
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
+    AppCompatImageView img_divider;
     AppCompatImageButton btn_camera, btnZoomIn, btnZoomOut;
-    AppCompatTextView txt_status_sensor, txt_status_foot, txt_status_a4;
+    AppCompatTextView txt_status_sensor, txt_status_foot, txt_status_a4, txt_status_kit;
     Guideline guide_validation_top, guide_validation_bottom;
     FrameLayout container;
     CameraConnectionFragment testFragment;
@@ -99,6 +101,7 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
         txt_status_sensor = findViewById(R.id.txt_status_sensor);
         txt_status_foot = findViewById(R.id.txt_status_foot);
         txt_status_a4 = findViewById(R.id.txt_status_a4);
+        txt_status_kit = findViewById(R.id.txt_status_kit);
         guide_validation_bottom = findViewById(R.id.guide_validation_bottom);
         guide_validation_top = findViewById(R.id.guide_validation_top);
         container = findViewById(R.id.container);

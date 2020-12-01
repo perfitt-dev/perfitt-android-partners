@@ -73,8 +73,8 @@
             android:id="@+id/guide_validation_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="@color/color_primary"
+            android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -102,6 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
+                android:gravity="center"
                 android:text="@string/activity_foot_camera_status_1"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -114,6 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
+                android:gravity="center"
                 android:text="@string/activity_foot_camera_status_2"
                 android:textColor="@color/white"
                 android:visibility="invisible"
@@ -127,7 +129,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
+                android:gravity="center"
                 android:text="@string/activity_foot_camera_status_3"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_status_kit"
+                style="@style/h6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:gravity="center"
                 android:textColor="@color/white"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"

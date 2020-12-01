@@ -1,6 +1,7 @@
 package com.perfitt.android
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebChromeClient
@@ -8,6 +9,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import com.perfitt.android.perfitt_partners.activities.KitDetectorActivity
 import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.listener.ConfirmListener
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,6 +21,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         WebView.setWebContentsDebuggingEnabled(true)
+
+//        startActivity(Intent(this, KitDetectorActivity::class.java))
+//        finish()
         web_view.run {
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {

@@ -26,9 +26,13 @@
     <string name="activity_foot_camera_title_left_message">왼발을 촬영해주세요.</string>
     <string name="activity_foot_camera_title_right_message">오른발을 촬영해주세요.</string>
     <string name="activity_foot_camera_status_1">수평을 맞춰주세요.</string>
-    <string name="activity_foot_camera_status_2">발이 탐지되지 않았습니다.</string>
+    <string name="activity_foot_camera_status_2">발이 화면에 탐지되지 않았습니다.</string>
     <string name="activity_foot_camera_status_3">A4 상단 모서리가 가이드 선과 닿지 않습니다.</string>
-
+    <string name="activity_foot_camera_kit_validation_base">발판이 화면에 잘 나오도록 해주세요.</string>
+    <string name="activity_foot_camera_kit_validation_empty_left_triangle">왼쪽 삼각형이 탐지되지 않았습니다.</string>
+    <string name="activity_foot_camera_kit_validation_empty_right_triangle">오른쪽 삼각형이 탐지되지 않았습니다.</string>
+    <string name="activity_foot_camera_kit_validation_degree_right_triangle">발판이 오른쪽으로 기울어졌습니다. 수평으로 맞춰 촬영해 주세요.</string>
+    <string name="activity_foot_camera_kit_validation_degree_left_triangle">발판이 왼쪽으로 기울어졌습니다. 수평으로 맞춰 촬영해 주세요.</string>
     <!--Permission-->
     <string name="msg_permission_camera">카메라 사용 권한이 필요합니다.</string>
     <string name="msg_permission_location">사용자의 위치 정보 사용 권한이 필요합니다.</string>
