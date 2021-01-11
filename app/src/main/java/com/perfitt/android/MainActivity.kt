@@ -1,8 +1,10 @@
 package com.perfitt.android
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.perfitt.android.perfitt_partners.activities.KitDetectorActivity
 import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.listener.ConfirmListener
+import com.perfitt.android.perfitt_partners.utils.DialogUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,9 +24,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         WebView.setWebContentsDebuggingEnabled(true)
-
-//        startActivity(Intent(this, KitDetectorActivity::class.java))
-//        finish()
         web_view.run {
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -44,11 +44,14 @@ class MainActivity : AppCompatActivity() {
             webChromeClient = WebChromeClient()
             // sdk code
             addJavascriptInterface(PerfittPartners.instance.getJavascriptInterface(this@MainActivity), PerfittPartners.instance.getJavascriptInterfaceName())
-            loadUrl("https://perfitt-static-files.s3.ap-northeast-2.amazonaws.com/resources/clutter/test.html")
+//            loadUrl("https://perfitt-static-files.s3.ap-northeast-2.amazonaws.com/resources/clutter/test.html")
+            loadUrl("http://m.sgumg.cafe24.com/")
+
         }
         PerfittPartners.instance.initialize(this, "PARTNERS_TEST_KEY")
         PerfittPartners.instance.onConfirm(object : ConfirmListener {
             override fun onConfirm(url: String) {
+                Log.d("Dony","url:$url")
                 web_view.loadUrl(url)
             }
         })

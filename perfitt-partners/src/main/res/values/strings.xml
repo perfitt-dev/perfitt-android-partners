@@ -12,6 +12,13 @@
     <string name="term_unisex">남녀공용</string>
     <string name="term_shoe_size_select">주로 신는 사이즈</string>
     <string name="term_name">이름</string>
+    <string name="term_left_foot">왼발</string>
+    <string name="term_right_foot">오른발</string>
+    <string name="term_length">길이</string>
+    <string name="term_width">너비</string>
+    <string name="term_foot_info">발 정보</string>
+    <string name="term_my_info">내 정보</string>
+    <string name="term_mm">%smm</string>
 
     <!--Message -->
     <string name="msg_dialog_update_foot_profile_caption">주로 신는 사이즈 기준으로 펄핏 추천 사이즈가 변경되오니, 정확하게 입력 부탁드립니다.</string>
@@ -28,17 +35,20 @@
     <string name="activity_foot_camera_status_1">수평을 맞춰주세요.</string>
     <string name="activity_foot_camera_status_2">발이 화면에 탐지되지 않았습니다.</string>
     <string name="activity_foot_camera_status_3">A4 상단 모서리가 가이드 선과 닿지 않습니다.</string>
-    <string name="activity_foot_camera_kit_validation_base">발판이 화면에 잘 나오도록 해주세요.</string>
+    <string name="activity_foot_camera_kit_validation_base">발판 윗 부분을 가이드 라인에 잘 맞춰 놓아주세요.</string>
     <string name="activity_foot_camera_kit_validation_empty_left_triangle">왼쪽 삼각형이 탐지되지 않았습니다.</string>
     <string name="activity_foot_camera_kit_validation_empty_right_triangle">오른쪽 삼각형이 탐지되지 않았습니다.</string>
     <string name="activity_foot_camera_kit_validation_degree_right_triangle">발판이 오른쪽으로 기울어졌습니다. 수평으로 맞춰 촬영해 주세요.</string>
     <string name="activity_foot_camera_kit_validation_degree_left_triangle">발판이 왼쪽으로 기울어졌습니다. 수평으로 맞춰 촬영해 주세요.</string>
+    <string name="activity_foot_camera_kit_validation_triangle">빛에 삼각형이 반사되거나 그림자에 가려져 있지 않은지 확인해 주세요.</string>
+
     <!--Permission-->
     <string name="msg_permission_camera">카메라 사용 권한이 필요합니다.</string>
     <string name="msg_permission_location">사용자의 위치 정보 사용 권한이 필요합니다.</string>
     <string name="msg_permission_storage">SD카드 내 이미지, 동영상 파일을 읽고 쓰기 위해 스토리지 접근 권한이 필요합니다.</string>
     <string name="msg_permission_denied_message">시스템 설정에서 해당 권한을 활성화해주세요.</string>
     <string name="msg_permission_title">권한 설정 안내</string>
+    <string name="msg_terms_plz_size_seleted">평소 신는 신발 사이즈를 선택해주세요.</string>
 
     <!--Error-->
     <string name="error_network_server">서버 오류입니다.</string>

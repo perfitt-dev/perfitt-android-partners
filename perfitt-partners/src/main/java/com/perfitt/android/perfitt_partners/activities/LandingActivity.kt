@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.perfitt.android.perfitt_partners.R
 import com.perfitt.android.perfitt_partners.utils.PermissionUtil
+import com.perfitt.android.perfitt_partners.utils.PreferenceUtil
 
 class LandingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,14 +18,23 @@ class LandingActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent?.let {
+            val pref = PreferenceUtil.instance(this)
             when (it.getStringExtra(LANDING_TYPE)) {
                 A4 -> {
                     PermissionUtil.instance
                         .setMessage(getString(R.string.msg_permission_camera))
                         .setPermissions(arrayListOf(Manifest.permission.CAMERA))
                         .onGranted {
-                            startActivity(Intent(this, A4DetectorActivity::class.java))
-                            finish()
+                            if (!pref.isFirstAppTutorial) {
+                                startActivity(Intent(this, TutorialWebViewActivity::class.java).apply {
+                                    putExtra(LandingActivity.LANDING_TYPE, LandingActivity.A4)
+                                })
+                                finish()
+                                pref.setFirstAppTutorial(true)
+                            } else {
+                                startActivity(Intent(this, A4DetectorActivity::class.java))
+                                finish()
+                            }
                         }
                         .onDenied {
                             finish()
@@ -39,8 +49,16 @@ class LandingActivity : AppCompatActivity() {
                         .setMessage(getString(R.string.msg_permission_camera))
                         .setPermissions(arrayListOf(Manifest.permission.CAMERA))
                         .onGranted {
-                            startActivity(Intent(this, KitDetectorActivity::class.java))
-                            finish()
+                            if (!pref.isFirstAppTutorial) {
+                                startActivity(Intent(this, TutorialWebViewActivity::class.java).apply {
+                                    putExtra(LandingActivity.LANDING_TYPE, LandingActivity.KIT)
+                                })
+                                finish()
+                                pref.setFirstAppTutorial(true)
+                            } else {
+                                startActivity(Intent(this, KitDetectorActivity::class.java))
+                                finish()
+                            }
                         }
                         .onDenied {
                             finish()

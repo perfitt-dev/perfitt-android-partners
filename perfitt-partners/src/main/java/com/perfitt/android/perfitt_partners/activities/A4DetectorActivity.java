@@ -185,12 +185,6 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
             }
             getSupportActionBar().setTitle(titleRes);
         }
-        PreferenceUtil pref = PreferenceUtil.Companion.instance(this);
-
-        if (!pref.isFirstAppTutorial()) {
-            startActivity(new Intent(this, TutorialWebViewActivity.class));
-            pref.setFirstAppTutorial(true);
-        } else {
             String message;
             if (viewType == TYPE_FOOT_RIGHT) {
                 message = getString(R.string.activity_foot_camera_title_right_message);
@@ -199,7 +193,6 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
             }
 
             DialogUtil.Companion.getInstance().showMessageDialog(this, "", message, null, null);
-        }
 
         img_circle = findViewById(R.id.img_circle);
         img_camera_disable = findViewById(R.id.img_camera_disable);
@@ -312,19 +305,26 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
                             });
                             if (!isBase) {
                                 runUI(() -> {
+                                    cameraValidation(false);
                                     txt_status_a4.setVisibility(View.VISIBLE);
                                     txt_status_a4.setText(getString(R.string.activity_foot_camera_status_3));
                                 });
                             } else if (!isFoot) {
-                                runUI(() -> txt_status_foot.setVisibility(View.VISIBLE));
+                                runUI(() ->
+                                {
+                                    cameraValidation(false);
+                                    txt_status_foot.setVisibility(View.VISIBLE);
+                                });
                             } else {
                                 runUI(() -> {
+                                    cameraValidation(true);
                                     txt_status_a4.setVisibility(View.VISIBLE);
                                     txt_status_a4.setText("버튼을 눌러 촬영해주세요.");
                                 });
                             }
                         } else {
                             runUI(() -> {
+                                cameraValidation(false);
                                 txt_status_sensor.setVisibility(View.VISIBLE);
                                 txt_status_foot.setVisibility(View.INVISIBLE);
                                 txt_status_a4.setVisibility(View.INVISIBLE);
@@ -343,6 +343,18 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
 //                        });
                     }
                 });
+    }
+
+    void cameraValidation(boolean isValidation) {
+        if (isValidation) {
+            img_camera_disable.setVisibility(View.INVISIBLE);
+            btn_camera.setVisibility(View.VISIBLE);
+            btn_camera.setClickable(true);
+        } else {
+            img_camera_disable.setVisibility(View.VISIBLE);
+            btn_camera.setVisibility(View.INVISIBLE);
+            btn_camera.setClickable(false);
+        }
     }
 
     @Override
@@ -370,14 +382,8 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
 
         if (x < 1.5 && x > -1.5 && y < 1.5 && y > -1.5) {
             isSensor = true;
-            img_camera_disable.setVisibility(View.INVISIBLE);
-            btn_camera.setVisibility(View.VISIBLE);
-            btn_camera.setClickable(true);
         } else {
             isSensor = false;
-            img_camera_disable.setVisibility(View.VISIBLE);
-            btn_camera.setVisibility(View.INVISIBLE);
-            btn_camera.setClickable(false);
         }
     }
 
@@ -430,14 +436,15 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
     private boolean validationBase(Classifier.Recognition result) {
         if (result.getTitle().equals("b'base'")) {
             Log.d("Dony", "Find Base");
-            Log.d("Dony", "top Y: " + guide_validation_top.getY());
-            Log.d("Dony", "bottom Y: " + guide_validation_bottom.getY());
+            Log.d("Dony", "top Y: " + guide_top.getY());
+            Log.d("Dony", "bottom Y: " + guide_bottom.getY());
             final RectF detectionScreenRect = new RectF();
             tracker.frameToCanvasMatrix.mapRect(detectionScreenRect, result.getLocation());
 
             float point = detectionScreenRect.top;
             Log.d("Dony", "point : " + point);
-            if (guide_validation_top.getY() <= point && guide_validation_bottom.getY() >= point) {
+            if (guide_validation_top_in.getY() <= point && guide_validation_top_out.getY() >= point) {
+//                if (guide_validation_top.getY() <= point && guide_validation_bottom.getY() >= point) {
                 return true;
             } else {
                 return false;

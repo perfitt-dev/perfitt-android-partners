@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Base64
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -17,8 +18,8 @@ import com.perfitt.android.perfitt_partners.controller.APIController
 import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.utils.DialogUtil
 import com.perfitt.android.perfitt_partners.utils.FileUtil
+import com.perfitt.android.perfitt_partners.utils.PoolUtils
 import kotlinx.android.synthetic.main.activity_foot_camera_confirm.*
-import org.json.JSONObject
 import java.io.File
 
 
@@ -66,36 +67,44 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                         }
                     }
                     val handler = Handler()
-                    DialogUtil.instance.showUpdateFootProfile(this@FootCameraConfirmActivity, null, null, null) dialog@{ name, gender, averageSize ->
-                        Thread(Runnable {
-                            val sourceType = packageManager.getPackageInfo(packageName, 0).versionName + "_" + Build.MODEL + "_android-" + Build.VERSION.SDK_INT
-                            val response = if (parentType == LandingActivity.A4) {
-                                APIController.instance.requestUsersA4(PerfittPartners.API_KEY, leftData, rightData, sourceType, averageSize, name, gender,PerfittPartners.CUSTOMER_ID) { errorCode, errorType, errorMessage ->
-                                    handler.post {
-                                        progressDialog?.dismiss()
-                                        Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                            } else {
-                                APIController.instance.requestUsersKit(PerfittPartners.API_KEY, leftData, rightData, sourceType, averageSize, name, gender,PerfittPartners.CUSTOMER_ID) { errorCode, errorType, errorMessage ->
-                                    handler.post {
-                                        progressDialog?.dismiss()
-                                        Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                            }
-                            response?.let { confirm ->
+                    Thread(Runnable {
+                        val sourceType = packageManager.getPackageInfo(packageName, 0).versionName + "_" + Build.MODEL + "_android-" + Build.VERSION.SDK_INT
+                        val response = if (parentType == LandingActivity.A4) {
+                            APIController.instance.requestUsersA4(PerfittPartners.API_KEY, leftData, rightData, sourceType) { errorCode, errorType, errorMessage ->
                                 handler.post {
                                     progressDialog?.dismiss()
-                                    JSONObject(confirm).getString("id").let { id ->
-                                        PerfittPartners.instance.confirmListener?.onConfirm("javascript:PERFITT_CALLBACK('$id')")
-                                        finish()
-                                    }
+                                    Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
                                 }
                             }
-
-                        }).start()
-                    }
+                        } else {
+                            APIController.instance.requestUsersKit(
+                                PerfittPartners.API_KEY,
+                                leftData,
+                                rightData,
+                                sourceType,
+                                PoolUtils.instance.leftFoot,
+                                PoolUtils.instance.rightFoot
+                            ) { errorCode, errorType, errorMessage ->
+                                handler.post {
+                                    progressDialog?.dismiss()
+                                    Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                        response?.let { response ->
+                            handler.post {
+                                Log.d("Dony", "response:$response")
+                                progressDialog?.dismiss()
+                                startActivity(Intent(this, FootResultActivity::class.java).apply {
+                                    putExtra("response", response)
+                                    putExtra("parentType", parentType)
+                                    putExtra("currentZoom", currentZoom)
+                                    putExtra("type", type)
+                                })
+                                finish()
+                            }
+                        }
+                    }).start()
                 }
             }
         }

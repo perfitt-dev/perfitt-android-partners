@@ -53,6 +53,8 @@ public interface Classifier {
     /** Optional location within the source image for the location of the recognized object. */
     private RectF location;
 
+    private float[] rectPosition;
+
     public Recognition(
         final String id, final String title, final Float confidence, final RectF location) {
       this.id = id;

@@ -158,7 +158,7 @@ class DialogUtil {
     /**
      * 사이즈 선택 다이얼로그
      */
-    private fun showSizePicker(activity: Activity?, size: String, onPositive: (size: String) -> Unit) {
+    fun showSizePicker(activity: Activity?, size: String, onPositive: (size: String) -> Unit) {
         activity?.let {
             val sizes = activity.resources.getStringArray(R.array.size)
             LayoutInflater.from(activity).inflate(R.layout.dialog_size_picker, null, false).run {

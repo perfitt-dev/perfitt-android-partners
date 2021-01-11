@@ -44,19 +44,23 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.perfitt.android.perfitt_partners.R;
+import com.perfitt.android.perfitt_partners.models.TFMappingModel;
 import com.perfitt.android.perfitt_partners.tflite.Classifier;
 import com.perfitt.android.perfitt_partners.tflite.TFLiteObjectDetectionAPIModel;
 import com.perfitt.android.perfitt_partners.tracking.MultiBoxTracker;
 import com.perfitt.android.perfitt_partners.utils.DialogUtil;
 import com.perfitt.android.perfitt_partners.utils.ImageUtils;
 import com.perfitt.android.perfitt_partners.utils.Logger;
+import com.perfitt.android.perfitt_partners.utils.PoolUtils;
 import com.perfitt.android.perfitt_partners.utils.PreferenceUtil;
 import com.perfitt.android.perfitt_partners.views.BorderedText;
 import com.perfitt.android.perfitt_partners.views.OverlayView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -179,33 +183,28 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
         if (getSupportActionBar() != null) {
             int titleRes;
             if (viewType == TYPE_FOOT_RIGHT) {
+                PoolUtils.Companion.getInstance().clearRightLocations();
                 titleRes = R.string.activity_foot_camera_title_right;
             } else {
+                PoolUtils.Companion.getInstance().clearLeftLocations();
                 titleRes = R.string.activity_foot_camera_title_left;
             }
             getSupportActionBar().setTitle(titleRes);
         }
-        PreferenceUtil pref = PreferenceUtil.Companion.instance(this);
-
-        if (!pref.isFirstAppTutorial()) {
-            startActivity(new Intent(this, TutorialWebViewActivity.class));
-            pref.setFirstAppTutorial(true);
+        String message;
+        if (viewType == TYPE_FOOT_RIGHT) {
+            message = getString(R.string.activity_foot_camera_title_right_message);
         } else {
-            String message;
-            if (viewType == TYPE_FOOT_RIGHT) {
-                message = getString(R.string.activity_foot_camera_title_right_message);
-            } else {
-                message = getString(R.string.activity_foot_camera_title_left_message);
-            }
-
-            DialogUtil.Companion.getInstance().showMessageDialog(this, "", message, null, null);
+            message = getString(R.string.activity_foot_camera_title_left_message);
         }
+
+        DialogUtil.Companion.getInstance().showMessageDialog(this, "", message, null, null);
 
         img_circle = findViewById(R.id.img_circle);
         img_camera_disable = findViewById(R.id.img_camera_disable);
         layout_empty = findViewById(R.id.layout_empty);
-        img_divider = findViewById(R.id.top_divider);
-        img_divider.setVisibility(View.GONE);
+//        img_divider = findViewById(R.id.top_divider);
+//        img_divider.setVisibility(View.GONE);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
     }
 
@@ -281,48 +280,88 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
                         final List<Classifier.Recognition> mappedRecognitions =
                                 new LinkedList<Classifier.Recognition>();
+                        final ArrayList<TFMappingModel> tfMappingModels = new ArrayList<>();
 
-                        for (final Classifier.Recognition result : results) {
-                            final RectF location = result.getLocation();
-                            if (location != null && result.getConfidence() >= minimumConfidence) {
-                                if (result.getTitle().equals("b'foot'") && result.getConfidence() >= 0.9) {
-                                    mappedRecognitions.add(result);
+                        for (int i = 0; i < results.size(); i++) {
+//                        for (final Classifier.Recognition result : results) {
+                            final RectF location = results.get(i).getLocation();
+                            TFMappingModel model = new TFMappingModel();
+                            if (location != null && results.get(i).getConfidence() >= minimumConfidence) {
+                                if (results.get(i).getTitle().equals("b'foot'") && results.get(i).getConfidence() >= 0.9) {
+                                    mappedRecognitions.add(results.get(i));
                                 }
-                                if (result.getTitle().equals("b'base'") && result.getConfidence() >= 0.8) {
-                                    mappedRecognitions.add(result);
+                                if (results.get(i).getTitle().equals("b'base'") && results.get(i).getConfidence() >= 0.8) {
+                                    mappedRecognitions.add(results.get(i));
                                 }
-                                if (result.getTitle().equals("b'left_triangle'") && result.getConfidence() >= 0.86) {
-                                    mappedRecognitions.add(result);
+                                if (results.get(i).getTitle().equals("b'left_triangle'") && results.get(i).getConfidence() >= 0.8) {
+                                    mappedRecognitions.add(results.get(i));
                                 }
-                                if (result.getTitle().equals("b'right_triangle'") && result.getConfidence() >= 0.86) {
-                                    mappedRecognitions.add(result);
+                                if (results.get(i).getTitle().equals("b'right_triangle'") && results.get(i).getConfidence() >= 0.8) {
+                                    mappedRecognitions.add(results.get(i));
                                 }
+
+                                model.setTitle(results.get(i).getTitle());
+                                model.setFloat(((TFLiteObjectDetectionAPIModel) detector).outputLocations[0][i]);
+                                tfMappingModels.add(model);
+
                                 canvas.drawRect(location, paint);
                                 cropToFrameTransform.mapRect(location);
-                                result.setLocation(location);
+                                results.get(i).setLocation(location);
                             }
                         }
 
-                        boolean isFoot = false, isBase = false, isTriangleDegree = false;
+                        boolean isFoot = false, isBase = false, isTriangle = false; //isTriangleDegree = false;
                         RectF leftRect = null, rightRect = null;
-                        for (final Classifier.Recognition result : mappedRecognitions) {
+                        for (int i = 0; i < mappedRecognitions.size(); i++) {
+//                            for (final Classifier.Recognition result : mappedRecognitions) {
                             if (!isBase) {
-                                isBase = validationBase(result);
+                                isBase = validationBase(mappedRecognitions.get(i));
+
+                                if (isBase) {
+                                    if (viewType == TYPE_FOOT_RIGHT) {
+                                        PoolUtils.Companion.getInstance().getRightFoot().setBaseModel(tfMappingModels.get(i));
+                                    } else {
+                                        PoolUtils.Companion.getInstance().getLeftFoot().setBaseModel(tfMappingModels.get(i));
+                                    }
+                                }
                             }
                             if (!isFoot) {
-                                isFoot = validationFoot(result);
+                                isFoot = validationFoot(mappedRecognitions.get(i));
+                                if (isFoot) {
+                                    if (viewType == TYPE_FOOT_RIGHT) {
+                                        PoolUtils.Companion.getInstance().getRightFoot().setFootModel(tfMappingModels.get(i));
+                                    } else {
+                                        PoolUtils.Companion.getInstance().getLeftFoot().setFootModel(tfMappingModels.get(i));
+                                    }
+                                }
                             }
-
                             if (leftRect == null) {
-                                leftRect = validationTriangleLeft(result);
+                                leftRect = validationTriangleLeft(mappedRecognitions.get(i));
+                                if (leftRect != null) {
+                                    if (viewType == TYPE_FOOT_RIGHT) {
+                                        PoolUtils.Companion.getInstance().getRightFoot().setLeftTriModel(tfMappingModels.get(i));
+                                    } else {
+                                        PoolUtils.Companion.getInstance().getLeftFoot().setLeftTriModel(tfMappingModels.get(i));
+                                    }
+                                }
                             }
 
                             if (rightRect == null) {
-                                rightRect = validationTriangleRight(result);
+                                rightRect = validationTriangleRight(mappedRecognitions.get(i));
+                                if (rightRect != null) {
+                                    if (viewType == TYPE_FOOT_RIGHT) {
+                                        PoolUtils.Companion.getInstance().getRightFoot().setRightTriModel(tfMappingModels.get(i));
+                                    } else {
+                                        PoolUtils.Companion.getInstance().getLeftFoot().setRightTriModel(tfMappingModels.get(i));
+                                    }
+                                }
                             }
 
-                            if (!isTriangleDegree) {
-                                isTriangleDegree = validationTriangle(leftRect, rightRect);
+//                            if (!isTriangleDegree) {
+//                                isTriangleDegree = validationTriangle(leftRect, rightRect);
+//                            }
+                            if (!isTriangle) {
+                                isTriangle = leftRect != null && rightRect != null;
                             }
                         }
 
@@ -335,21 +374,41 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
                             });
                             if (!isBase) {
                                 runUI(() -> {
+                                    cameraValidation(false);
                                     txt_status_a4.setText(R.string.activity_foot_camera_kit_validation_base);
                                     txt_status_a4.setVisibility(View.VISIBLE);
                                 });
                             } else if (!isFoot) {
-                                runUI(() -> txt_status_foot.setVisibility(View.VISIBLE));
-                            } else if (!isTriangleDegree) {
-                                runUI(() -> txt_status_kit.setVisibility(View.VISIBLE));
-                            } else {
                                 runUI(() -> {
+                                    cameraValidation(false);
+//                                    txt_status_foot.setVisibility(View.VISIBLE);
+                                    txt_status_a4.setText(R.string.activity_foot_camera_status_2);
+                                    txt_status_a4.setVisibility(View.VISIBLE);
+                                });
+                            } else if (!isTriangle) {
+                                runUI(() -> {
+                                    cameraValidation(false);
+//                                    txt_status_foot.setVisibility(View.VISIBLE);
+                                    txt_status_a4.setText(R.string.activity_foot_camera_kit_validation_triangle);
+                                    txt_status_a4.setVisibility(View.VISIBLE);
+                                });
+                            }
+//                            else if (!isTriangleDegree) {
+//                                runUI(() -> {
+//                                    cameraValidation(false);
+//                                    txt_status_kit.setVisibility(View.VISIBLE);
+//                                });
+//                            }
+                            else {
+                                runUI(() -> {
+                                    cameraValidation(true);
                                     txt_status_a4.setVisibility(View.VISIBLE);
                                     txt_status_a4.setText("버튼을 눌러 촬영해주세요.");
                                 });
                             }
                         } else {
                             runUI(() -> {
+                                cameraValidation(false);
                                 txt_status_sensor.setVisibility(View.VISIBLE);
                                 txt_status_foot.setVisibility(View.INVISIBLE);
                                 txt_status_a4.setVisibility(View.INVISIBLE);
@@ -369,6 +428,18 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 //                        });
                     }
                 });
+    }
+
+    void cameraValidation(boolean isValidation) {
+        if (isValidation) {
+            img_camera_disable.setVisibility(View.INVISIBLE);
+            btn_camera.setVisibility(View.VISIBLE);
+            btn_camera.setClickable(true);
+        } else {
+            img_camera_disable.setVisibility(View.VISIBLE);
+            btn_camera.setVisibility(View.INVISIBLE);
+            btn_camera.setClickable(false);
+        }
     }
 
     @Override
@@ -396,14 +467,8 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
         if (x < 1.5 && x > -1.5 && y < 1.5 && y > -1.5) {
             isSensor = true;
-            img_camera_disable.setVisibility(View.INVISIBLE);
-            btn_camera.setVisibility(View.VISIBLE);
-            btn_camera.setClickable(true);
         } else {
             isSensor = false;
-            img_camera_disable.setVisibility(View.VISIBLE);
-            btn_camera.setVisibility(View.INVISIBLE);
-            btn_camera.setClickable(false);
         }
     }
 
@@ -446,7 +511,6 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
     private boolean validationFoot(Classifier.Recognition result) {
         if (result.getTitle().equals("b'foot'")) {
-            Log.d("Dony", "발 탐지");
             // 발이 탐지 되었다면
             return true;
         } else {
@@ -456,9 +520,8 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
     private boolean validationBase(Classifier.Recognition result) {
         if (result.getTitle().equals("b'base'")) {
-            Log.d("Dony", "발판 탐지");
             // 발판이 탐지 되었다면
-            return true;
+            return validationGuide(result);
         } else {
             return false;
         }
@@ -467,12 +530,10 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
     private RectF validationTriangleLeft(Classifier.Recognition result) {
         RectF leftRect = null;
         if (result.getTitle().equals("b'left_triangle'")) {
-            Log.d("Dony", "왼 발 탐지");
             // 왼쪽 삼각형이 탐지 되었다면
             leftRect = new RectF();
             tracker.frameToCanvasMatrix.mapRect(leftRect, result.getLocation());
         } else {
-            Log.d("Dony", "왼 발 탐지 안됨");
             runUI(() -> {
                 txt_status_kit.setVisibility(View.VISIBLE);
                 txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_empty_left_triangle);
@@ -484,12 +545,10 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
     private RectF validationTriangleRight(Classifier.Recognition result) {
         RectF rightRect = null;
         if (result.getTitle().equals("b'right_triangle'")) {
-            Log.d("Dony", "오른발 탐지");
             // 오른쪽 삼각형이 탐지 되었다면
             rightRect = new RectF();
             tracker.frameToCanvasMatrix.mapRect(rightRect, result.getLocation());
         } else {
-            Log.d("Dony", "오른발 탐지 안됨");
             runUI(() -> {
                 txt_status_kit.setVisibility(View.VISIBLE);
                 txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_empty_right_triangle);
@@ -509,31 +568,75 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
         double degree = (angleResult * 180 / Math.PI);
 
-        Log.d("Dony", "degree: " + degree);
-        Log.d("Dony", "angleResult: " + angleResult);
         double adjust = 4;
         if ((degree < adjust && degree > -adjust) || (degree + 180 > -adjust && degree + 180 < adjust) || (degree < 180 && degree > 180 - adjust)) {
-            Log.d("Dony", "success");
             return true;
         }
-        Log.d("Dony", "failed");
 
         if (leftRect.top < rightRect.top) {
             // 좌표의 각도가 -8 미만 인 경우
             runUI(() -> {
                 txt_status_kit.setVisibility(View.VISIBLE);
-                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_degree_left_triangle);
+                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_triangle);
             });
             return false;
         } else if (leftRect.top > rightRect.top) {
             // 좌표의 각도가 8도 초과 인 경우
             runUI(() -> {
                 txt_status_kit.setVisibility(View.VISIBLE);
-                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_degree_right_triangle);
+                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_triangle);
             });
             return false;
         }
         return false;
+    }
+
+    private boolean validationGuide(Classifier.Recognition result) {
+        Log.d("Dony", "-----------------------------------");
+        Log.d("Dony", "In Top Y: " + guide_validation_top_in.getY());
+        Log.d("Dony", "In Left X: " + guide_validation_left_in.getX());
+        Log.d("Dony", "In Right X: " + guide_validation_right_in.getX());
+        Log.d("Dony", "-----------------------------------");
+        Log.d("Dony", "Out Top Y: " + guide_validation_top_out.getY());
+        Log.d("Dony", "Out Left X: " + guide_validation_left_out.getX());
+        Log.d("Dony", "Out Right X: " + guide_validation_right_out.getX());
+        final RectF detectionScreenRect = new RectF();
+        tracker.frameToCanvasMatrix.mapRect(detectionScreenRect, result.getLocation());
+
+        float pointTop = detectionScreenRect.top;
+        float pointLeft = detectionScreenRect.left;
+        float pointRight = detectionScreenRect.right;
+        Log.d("Dony", "-----------------------------------");
+        Log.d("Dony", "point Top: " + pointTop);
+        Log.d("Dony", "point Left: " + pointLeft);
+        Log.d("Dony", "point Right: " + pointRight);
+
+        // TODO Debug
+//        if (guide_validation_top_out.getY() <= pointTop && guide_validation_top_in.getY() >= pointTop) {
+//            top_divider.setBackgroundColor(ContextCompat.getColor(this, R.color.vibrant_green));
+//        } else {
+//            top_divider.setBackgroundColor(ContextCompat.getColor(this, R.color.color_primary));
+//        }
+//        if (guide_validation_left_out.getX() <= pointLeft && guide_validation_left_in.getX() >= pointLeft) {
+//            left_divider.setBackgroundColor(ContextCompat.getColor(this, R.color.vibrant_green));
+//        } else {
+//            left_divider.setBackgroundColor(ContextCompat.getColor(this, R.color.color_primary));
+//        }
+//        if (guide_validation_right_in.getX() <= pointRight && guide_validation_right_out.getX() >= pointRight) {
+//            right_divider.setBackgroundColor(ContextCompat.getColor(this, R.color.vibrant_green));
+//        } else {
+//            right_divider.setBackgroundColor(ContextCompat.getColor(this, R.color.color_primary));
+//        }
+
+        if (guide_validation_top_out.getY() <= pointTop && guide_validation_top_in.getY() >= pointTop &&
+                guide_validation_left_out.getX() <= pointLeft && guide_validation_left_in.getX() >= pointLeft &&
+                guide_validation_right_in.getX() <= pointRight && guide_validation_right_out.getX() >= pointRight) {
+            Log.d("Dony", "Baee Validation Success");
+            return true;
+        } else {
+            Log.d("Dony", "Baee Validation Failed");
+            return false;
+        }
     }
 
     private void runUI(Runnable runnable) {

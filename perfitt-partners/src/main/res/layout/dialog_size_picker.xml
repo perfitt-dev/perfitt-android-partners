@@ -7,13 +7,24 @@
     android:layout_marginEnd="40dp"
     android:paddingTop="20dp">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txt_title"
+        style="@style/h6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="center"
+        android:text="@string/msg_terms_plz_size_seleted"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.perfitt.android.perfitt_partners.views.FontableNumberPicker
         android:id="@+id/number_picker"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_title" />
 
     <include
         android:id="@+id/layout_button"

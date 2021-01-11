@@ -2,6 +2,8 @@ package com.perfitt.android.perfitt_partners.controller
 
 import android.content.ContentValues
 import android.util.Log
+import com.perfitt.android.perfitt_partners.utils.PoolUtils
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
@@ -103,6 +105,7 @@ class APIController {
          */
         // 보낼 데이터가 없으면 파라미터를 비운다.
         if (_params == null) sbParams.append("") else {
+            Log.d("Dony", "body:$_params")
             sbParams.append(_params.toString())
         }
         /**
@@ -174,31 +177,82 @@ class APIController {
         return null
     }
 
+    /**
+     * A4 버전
+     */
     fun requestUsersA4(
-        apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize: Int, nickname: String?, gender: String?, customerId: String?,
-        errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)
+        apiKey: String, leftImage: String, rightImage: String, sourceType: String, errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)
     ): String? {
         return requestPost("$USERS_A4?apiKey=$apiKey", JSONObject().apply {
             put("leftImage", leftImage)
             put("rightImage", rightImage)
             put("sourceType", sourceType)
-            put("averageSize", averageSize)
-            put("nickname", nickname)
-            put("gender", gender)
-            put("customerId", customerId)
         }, errorUnit)
     }
 
+    /**
+     * 키트 버전
+     */
     fun requestUsersKit(
-        apiKey: String, leftImage: String, rightImage: String, sourceType: String, averageSize: Int, nickname: String?, gender: String?, customerId: String?,
+        apiKey: String,
+        leftImage: String,
+        rightImage: String,
+        sourceType: String,
+        leftFoot: PoolUtils.FootRectLocation,
+        rightFoot: PoolUtils.FootRectLocation,
         errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)
     ): String? {
         return requestPost("$USERS_KIT?apiKey=$apiKey", JSONObject().apply {
-            put("leftImage", leftImage)
-            put("rightImage", rightImage)
             put("sourceType", sourceType)
+            put("left", JSONObject().apply {
+                put("image", leftImage)
+                put("base", JSONArray().apply {
+                    leftFoot.baseModel?.float?.forEach {
+                        put(it)
+                    }
+                })
+                put("leftRect", JSONArray().apply {
+                    leftFoot.leftTriModel?.float?.forEach {
+                        put(it)
+                    }
+                })
+                put("rightRect", JSONArray().apply {
+                    leftFoot.rightTriModel?.float?.forEach {
+                        put(it)
+                    }
+                })
+            })
+            put("right", JSONObject().apply {
+                put("image", rightImage)
+                put("base", JSONArray().apply {
+                    rightFoot.baseModel?.float?.forEach {
+                        put(it)
+                    }
+                })
+                put("leftRect", JSONArray().apply {
+                    rightFoot.leftTriModel?.float?.forEach {
+                        put(it)
+                    }
+                })
+                put("rightRect", JSONArray().apply {
+                    rightFoot.rightTriModel?.float?.forEach {
+                        put(it)
+                    }
+                })
+            })
+        }, errorUnit)
+    }
+
+    /**
+     * 유저 생성
+     */
+    fun requestCreateUsers(
+        apiKey: String, feetId: String, averageSize: Int, nickName: String?, gender: String?, customerId: String, errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)
+    ): String? {
+        return requestPost("$USERS?apiKey=$apiKey", JSONObject().apply {
+            put("feetId", feetId)
             put("averageSize", averageSize)
-            put("nickname", nickname)
+            put("nickName", nickName)
             put("gender", gender)
             put("customerId", customerId)
         }, errorUnit)
@@ -211,8 +265,9 @@ class APIController {
     companion object {
         val instance: APIController by lazy { Holder.INSTANCE }
         private const val BASE_URL = "https://dev-api.perfitt.io"
-        private const val USERS_KIT = "$BASE_URL/core/v2/ml1/users"
-        private const val USERS_A4 = "$BASE_URL/core/v2/ml2/users"
+        private const val USERS_KIT = "$BASE_URL/core/v2/ml1/feet"
+        private const val USERS_A4 = "$BASE_URL/core/v2/ml2/feet"
+        private const val USERS = "$BASE_URL/core/v2/users"
         const val TUTORIAL_URL = "https://service.perfitt.io/howtomeasure"
     }
 }

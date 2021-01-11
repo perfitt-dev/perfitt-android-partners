@@ -129,8 +129,11 @@ dependencies {
     implementation rootProject.ext.ktx
     implementation rootProject.ext.appcompat
     implementation rootProject.ext.constraintlayout
+    implementation rootProject.ext.gson
+    // RELEASE
 //    api rootProject.ext.tensorLite
 //    api rootProject.ext.tensorMeta
+    // TEST
     embed rootProject.ext.tensorLite
     embed rootProject.ext.tensorMeta
 }

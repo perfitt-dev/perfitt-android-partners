@@ -10,7 +10,7 @@ class PerfittPartners {
 
     /**
      * @param context application context
-     * @param context your Perfitt Partners API Key
+     * @param apiKey your Perfitt Partners API Key
      */
     fun initialize(context: Context, apiKey: String) {
         API_KEY = apiKey
@@ -37,5 +37,6 @@ class PerfittPartners {
         val instance: PerfittPartners by lazy { Holder.INSTANCE }
         var API_KEY = ""
         var CUSTOMER_ID = ""
+        var AVERAGE_SIZE = 0
     }
 }

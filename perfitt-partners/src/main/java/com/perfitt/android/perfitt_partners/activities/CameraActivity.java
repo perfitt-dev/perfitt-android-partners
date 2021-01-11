@@ -82,10 +82,13 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
     private int yRowStride;
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
-    AppCompatImageView img_divider;
+    AppCompatImageView img_divider,top_divider,left_divider,right_divider;
     AppCompatImageButton btn_camera, btnZoomIn, btnZoomOut;
     AppCompatTextView txt_status_sensor, txt_status_foot, txt_status_a4, txt_status_kit;
-    Guideline guide_validation_top, guide_validation_bottom;
+    Guideline guide_bottom, guide_top, guide_left, guide_right,
+            guide_validation_top_in, guide_validation_top_out,
+            guide_validation_left_in, guide_validation_left_out,
+            guide_validation_right_in, guide_validation_right_out;
     FrameLayout container;
     CameraConnectionFragment testFragment;
 
@@ -102,10 +105,20 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
         txt_status_foot = findViewById(R.id.txt_status_foot);
         txt_status_a4 = findViewById(R.id.txt_status_a4);
         txt_status_kit = findViewById(R.id.txt_status_kit);
-        guide_validation_bottom = findViewById(R.id.guide_validation_bottom);
-        guide_validation_top = findViewById(R.id.guide_validation_top);
+        guide_bottom = findViewById(R.id.guide_bottom);
+        guide_top = findViewById(R.id.guide_top);
+        guide_left = findViewById(R.id.guide_left);
+        guide_right = findViewById(R.id.guide_right);
+        guide_validation_top_in = findViewById(R.id.guide_validation_top_in);
+        guide_validation_left_in = findViewById(R.id.guide_validation_left_in);
+        guide_validation_right_in = findViewById(R.id.guide_validation_right_in);
+        guide_validation_top_out = findViewById(R.id.guide_validation_top_out);
+        guide_validation_left_out = findViewById(R.id.guide_validation_left_out);
+        guide_validation_right_out = findViewById(R.id.guide_validation_right_out);
         container = findViewById(R.id.container);
-
+        top_divider = findViewById(R.id.top_divider);
+        left_divider = findViewById(R.id.left_divider);
+        right_divider = findViewById(R.id.right_divider);
         if (hasPermission()) {
             setFragment();
         } else {
@@ -365,10 +378,11 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
                 // Fallback to camera1 API for internal cameras that don't have full support.
                 // This should help with legacy situations where using the camera2 API causes
                 // distorted or otherwise broken previews.
-                useCamera2API =
-                        (facing == CameraCharacteristics.LENS_FACING_EXTERNAL)
-                                || isHardwareLevelSupported(
-                                characteristics, CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_FULL);
+//                useCamera2API =
+//                        (facing == CameraCharacteristics.LENS_FACING_EXTERNAL)
+//                                || isHardwareLevelSupported(
+//                                characteristics, CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_FULL);
+                useCamera2API = true;
                 LOGGER.i("Camera API lv2?: %s", useCamera2API);
                 return cameraId;
             }

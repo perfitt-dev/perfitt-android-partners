@@ -14,6 +14,7 @@ import com.perfitt.android.perfitt_partners.controller.APIController
 import kotlinx.android.synthetic.main.activity_web_view_tutorial.*
 
 class TutorialWebViewActivity : AppCompatActivity() {
+    private var landingType = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view_tutorial)
@@ -27,6 +28,7 @@ class TutorialWebViewActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent?.let {
+            landingType = it.getStringExtra(LandingActivity.LANDING_TYPE) ?: ""
             web_view.run {
                 webViewClient = object : WebViewClient() {
                     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -47,5 +49,17 @@ class TutorialWebViewActivity : AppCompatActivity() {
                 loadUrl(APIController.TUTORIAL_URL)
             }
         }
+    }
+
+    override fun onDestroy() {
+        when (landingType) {
+            LandingActivity.KIT ->{
+                startActivity(Intent(this, KitDetectorActivity::class.java))
+            }
+            LandingActivity.A4 ->{
+                startActivity(Intent(this, A4DetectorActivity::class.java))
+            }
+        }
+        super.onDestroy()
     }
 }

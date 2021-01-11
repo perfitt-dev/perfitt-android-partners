@@ -9,6 +9,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application>
+        <activity android:name=".activities.FootResultActivity"></activity>
         <activity
             android:name=".activities.A4DetectorActivity"
             android:screenOrientation="portrait">
