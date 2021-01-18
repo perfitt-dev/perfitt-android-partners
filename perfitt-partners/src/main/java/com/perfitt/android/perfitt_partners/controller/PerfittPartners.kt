@@ -40,11 +40,13 @@ class PerfittPartners {
     }
 
     fun runSdk(){
-        DialogUtil.instance.showSizePicker(context as Activity, "250") { size ->
-            AVERAGE_SIZE = size.toInt()
-            context?.startActivity(Intent(context, LandingActivity::class.java).apply {
-                putExtra(LandingActivity.LANDING_TYPE, LandingActivity.KIT)
-            })
+        (context as Activity).run {
+            DialogUtil.instance.showSizePicker(this, "250") { size ->
+                AVERAGE_SIZE = size.toInt()
+                this.startActivity(Intent(this, LandingActivity::class.java).apply {
+                    putExtra(LandingActivity.LANDING_TYPE, LandingActivity.KIT)
+                })
+            }
         }
     }
 
