@@ -1,11 +1,17 @@
 package com.perfitt.android.perfitt_partners.controller
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import com.perfitt.android.perfitt_partners.activities.LandingActivity
 import com.perfitt.android.perfitt_partners.listener.ConfirmListener
+import com.perfitt.android.perfitt_partners.listener.NativeConfirmListener
+import com.perfitt.android.perfitt_partners.utils.DialogUtil
 import com.perfitt.android.perfitt_partners.utils.PerfittPartnersJSInterface
 
 class PerfittPartners {
     var confirmListener: ConfirmListener? = null
+    var nativeConfirmListener: NativeConfirmListener? = null
     var context: Context? = null
 
     /**
@@ -27,6 +33,19 @@ class PerfittPartners {
 
     fun onConfirm(listener: ConfirmListener) {
         this.confirmListener = listener
+    }
+
+    fun onNativeConfirm(listener: NativeConfirmListener) {
+        this.nativeConfirmListener = listener
+    }
+
+    fun runSdk(){
+        DialogUtil.instance.showSizePicker(context as Activity, "250") { size ->
+            AVERAGE_SIZE = size.toInt()
+            context?.startActivity(Intent(context, LandingActivity::class.java).apply {
+                putExtra(LandingActivity.LANDING_TYPE, LandingActivity.KIT)
+            })
+        }
     }
 
     private object Holder {

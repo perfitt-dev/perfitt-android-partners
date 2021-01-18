@@ -130,10 +130,10 @@ dependencies {
     implementation rootProject.ext.appcompat
     implementation rootProject.ext.constraintlayout
     implementation rootProject.ext.gson
-    // RELEASE
+    // TEST
 //    api rootProject.ext.tensorLite
 //    api rootProject.ext.tensorMeta
-    // TEST
+    // RELEASE
     embed rootProject.ext.tensorLite
     embed rootProject.ext.tensorMeta
 }

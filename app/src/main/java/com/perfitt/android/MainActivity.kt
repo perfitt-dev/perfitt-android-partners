@@ -1,8 +1,6 @@
 package com.perfitt.android
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,10 +9,9 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.perfitt.android.perfitt_partners.activities.KitDetectorActivity
 import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.listener.ConfirmListener
-import com.perfitt.android.perfitt_partners.utils.DialogUtil
+import com.perfitt.android.perfitt_partners.listener.NativeConfirmListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -46,14 +43,21 @@ class MainActivity : AppCompatActivity() {
             addJavascriptInterface(PerfittPartners.instance.getJavascriptInterface(this@MainActivity), PerfittPartners.instance.getJavascriptInterfaceName())
 //            loadUrl("https://perfitt-static-files.s3.ap-northeast-2.amazonaws.com/resources/clutter/test.html")
             loadUrl("http://m.sgumg.cafe24.com/")
-
         }
         PerfittPartners.instance.initialize(this, "PARTNERS_TEST_KEY")
         PerfittPartners.instance.onConfirm(object : ConfirmListener {
             override fun onConfirm(url: String) {
-                Log.d("Dony","url:$url")
+                Log.d("Dony", "url:$url")
                 web_view.loadUrl(url)
             }
         })
+        PerfittPartners.instance.onNativeConfirm(object : NativeConfirmListener {
+            override fun onConfirm(feetId: String) {
+                Log.d("Dony", "feetId:$feetId")
+            }
+        })
+        btn_native.setOnClickListener {
+            PerfittPartners.instance.runSdk()
+        }
     }
 }

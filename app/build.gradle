@@ -37,6 +37,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation rootProject.ext.constraintlayout
     implementation rootProject.ext.appcompat
+    // TEST
 //    implementation project(':perfitt-partners')
-    implementation 'com.perfitt.android:perfitt-partners:1.0.0-beta4'
+    // RELEASE
+    implementation 'com.perfitt.android:perfitt-partners:1.0.0-beta5'
 }

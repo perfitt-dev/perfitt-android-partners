@@ -68,6 +68,7 @@ class FootResultActivity : AppCompatActivity() {
                         Log.d("Dony", "response:$response")
                         JSONObject(response).getString("id").let { id ->
                             PerfittPartners.instance.confirmListener?.onConfirm("javascript:PERFITT_CALLBACK('$id')")
+                            PerfittPartners.instance.nativeConfirmListener?.onConfirm(id)
                             finish()
                         }
                     }
