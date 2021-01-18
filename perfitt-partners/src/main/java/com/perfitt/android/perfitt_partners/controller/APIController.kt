@@ -49,8 +49,8 @@ class APIController {
 
             // [2-1]. urlConn 설정.
             urlConn.run {
-                readTimeout = 10000
-                connectTimeout = 15000
+                readTimeout = 30000
+                connectTimeout = 30000
                 requestMethod = "GET" // URL 요청에 대한 메소드 설정 : GET/POST.
 //                doOutput = true
                 doInput = true
@@ -117,8 +117,8 @@ class APIController {
 
             // [2-1]. urlConn 설정.
             urlConn.run {
-                readTimeout = 5000
-                connectTimeout = 5000
+                readTimeout = 30000
+                connectTimeout = 30000
                 requestMethod = "POST" // URL 요청에 대한 메소드 설정 : GET/POST.
                 doOutput = true
                 doInput = true
@@ -252,7 +252,7 @@ class APIController {
         return requestPost("$USERS?apiKey=$apiKey", JSONObject().apply {
             put("feetId", feetId)
             put("averageSize", averageSize)
-            put("nickName", nickName)
+            put("nickname", nickName)
             put("gender", gender)
             put("customerId", customerId)
         }, errorUnit)

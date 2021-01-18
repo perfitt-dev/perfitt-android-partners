@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.perfitt.android.perfitt_partners.R
 import com.perfitt.android.perfitt_partners.controller.APIController
 import com.perfitt.android.perfitt_partners.controller.PerfittPartners
-import com.perfitt.android.perfitt_partners.utils.DialogUtil
+import com.perfitt.android.perfitt_partners.utils.DialogSDKUtil
 import com.perfitt.android.perfitt_partners.utils.FileUtil
 import com.perfitt.android.perfitt_partners.utils.PoolUtils
 import kotlinx.android.synthetic.main.activity_foot_camera_confirm.*
@@ -50,7 +50,7 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                 }
                 finish()
             } else {
-                progressDialog = DialogUtil.instance.showProgressMessage(this@FootCameraConfirmActivity, getString(R.string.term_progress_size))
+                progressDialog = DialogSDKUtil.INSTANCE.showProgressMessage(this@FootCameraConfirmActivity, getString(R.string.term_progress_size))
                 var rightData = ""
                 var leftData = ""
                 FileUtil.instance.getFootFilePath(this).let {

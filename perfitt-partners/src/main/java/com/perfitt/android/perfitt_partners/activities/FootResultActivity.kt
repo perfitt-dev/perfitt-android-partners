@@ -13,8 +13,8 @@ import com.perfitt.android.perfitt_partners.controller.APIController
 import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.models.ResponseFeet
 import kotlinx.android.synthetic.main.activity_foot_result.*
-import kotlinx.android.synthetic.main.content_home_foot_data.*
-import kotlinx.android.synthetic.main.content_options.*
+import kotlinx.android.synthetic.main.content_sdk_home_foot_data.*
+import kotlinx.android.synthetic.main.content_sdk_options.*
 import org.json.JSONObject
 
 class FootResultActivity : AppCompatActivity() {

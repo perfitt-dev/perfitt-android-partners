@@ -811,7 +811,7 @@ public class CameraConnectionFragment extends Fragment {
                 public void onCaptureCompleted(CameraCaptureSession session,
                                                CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Toast.makeText(context, "Saved:" + tempFile, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "Saved:" + tempFile, Toast.LENGTH_SHORT).show();
 //                    startPreview();
                     runnable.run();
                 }

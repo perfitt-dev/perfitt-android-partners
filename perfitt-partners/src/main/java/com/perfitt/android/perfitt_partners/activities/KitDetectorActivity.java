@@ -44,18 +44,16 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import com.perfitt.android.perfitt_partners.R;
 import com.perfitt.android.perfitt_partners.models.TFMappingModel;
 import com.perfitt.android.perfitt_partners.tflite.Classifier;
 import com.perfitt.android.perfitt_partners.tflite.TFLiteObjectDetectionAPIModel;
 import com.perfitt.android.perfitt_partners.tracking.MultiBoxTracker;
-import com.perfitt.android.perfitt_partners.utils.DialogUtil;
+import com.perfitt.android.perfitt_partners.utils.DialogSDKUtil;
 import com.perfitt.android.perfitt_partners.utils.ImageUtils;
 import com.perfitt.android.perfitt_partners.utils.Logger;
 import com.perfitt.android.perfitt_partners.utils.PoolUtils;
-import com.perfitt.android.perfitt_partners.utils.PreferenceUtil;
 import com.perfitt.android.perfitt_partners.views.BorderedText;
 import com.perfitt.android.perfitt_partners.views.OverlayView;
 
@@ -198,7 +196,7 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
             message = getString(R.string.activity_foot_camera_title_left_message);
         }
 
-        DialogUtil.Companion.getInstance().showMessageDialog(this, "", message, null, null);
+        DialogSDKUtil.Companion.getINSTANCE().showMessageDialog(this, "", message, null, null);
 
         img_circle = findViewById(R.id.img_circle);
         img_camera_disable = findViewById(R.id.img_camera_disable);

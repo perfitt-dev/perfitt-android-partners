@@ -7,11 +7,11 @@ import androidx.appcompat.app.AlertDialog
 import com.perfitt.android.perfitt_partners.R
 import com.perfitt.android.perfitt_partners.views.CustomAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_progress_message.view.*
-import kotlinx.android.synthetic.main.dialog_size_picker.view.*
+import kotlinx.android.synthetic.main.dialog_sdk_size_picker.view.*
 import kotlinx.android.synthetic.main.dialog_update_foot_profile.view.*
 
 
-class DialogUtil {
+class DialogSDKUtil {
 
     /**
      * 메세지 다이얼로그 보여주기
@@ -161,7 +161,7 @@ class DialogUtil {
     fun showSizePicker(activity: Activity?, size: String, onPositive: (size: String) -> Unit) {
         activity?.let {
             val sizes = activity.resources.getStringArray(R.array.size)
-            LayoutInflater.from(activity).inflate(R.layout.dialog_size_picker, null, false).run {
+            LayoutInflater.from(activity).inflate(R.layout.dialog_sdk_size_picker, null, false).run {
                 CustomAlertDialogBuilder(activity, this).apply {
                     number_picker.run {
                         minValue = 0
@@ -192,10 +192,10 @@ class DialogUtil {
     }
 
     private object Holder {
-        val INSTANCE = DialogUtil()
+        val INSTANCE = DialogSDKUtil()
     }
 
     companion object {
-        val instance: DialogUtil by lazy { Holder.INSTANCE }
+        val INSTANCE: DialogSDKUtil by lazy { Holder.INSTANCE }
     }
 }

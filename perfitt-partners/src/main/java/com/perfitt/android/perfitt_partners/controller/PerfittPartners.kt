@@ -6,7 +6,7 @@ import android.content.Intent
 import com.perfitt.android.perfitt_partners.activities.LandingActivity
 import com.perfitt.android.perfitt_partners.listener.ConfirmListener
 import com.perfitt.android.perfitt_partners.listener.NativeConfirmListener
-import com.perfitt.android.perfitt_partners.utils.DialogUtil
+import com.perfitt.android.perfitt_partners.utils.DialogSDKUtil
 import com.perfitt.android.perfitt_partners.utils.PerfittPartnersJSInterface
 
 class PerfittPartners {
@@ -39,14 +39,13 @@ class PerfittPartners {
         this.nativeConfirmListener = listener
     }
 
-    fun runSdk(){
-        (context as Activity).run {
-            DialogUtil.instance.showSizePicker(this, "250") { size ->
-                AVERAGE_SIZE = size.toInt()
-                this.startActivity(Intent(this, LandingActivity::class.java).apply {
-                    putExtra(LandingActivity.LANDING_TYPE, LandingActivity.KIT)
-                })
-            }
+    fun runSdk(activity: Activity, customerId: String) {
+        CUSTOMER_ID = customerId
+        DialogSDKUtil.INSTANCE.showSizePicker(activity, "250") { size ->
+            AVERAGE_SIZE = size.toInt()
+            activity.startActivity(Intent(activity, LandingActivity::class.java).apply {
+                putExtra(LandingActivity.LANDING_TYPE, LandingActivity.KIT)
+            })
         }
     }
 

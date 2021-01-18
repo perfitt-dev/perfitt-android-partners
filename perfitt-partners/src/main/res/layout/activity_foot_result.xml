@@ -26,7 +26,7 @@
 
     <include
         android:id="@+id/layout_top"
-        layout="@layout/content_home_foot_data"
+        layout="@layout/content_sdk_home_foot_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -62,7 +62,7 @@
 
     <include
         android:id="@+id/layout_my_info"
-        layout="@layout/content_options"
+        layout="@layout/content_sdk_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

@@ -107,7 +107,7 @@ class PermissionUtil {
                     return
                 }
                 if (!activity.isFinishing) {
-                    DialogUtil.instance.showMessageDialog(
+                    DialogSDKUtil.INSTANCE.showMessageDialog(
                             activity,
                             title = getString(activity, R.string.msg_permission_title),
                             message = grantedMessage,
@@ -140,7 +140,7 @@ class PermissionUtil {
         permissions.forEach {
             if (isDenied(activity, it)) {
                 // 거절된 퍼미션이 존재하면
-                DialogUtil.instance.showMessageDialogCustomText(
+                DialogSDKUtil.INSTANCE.showMessageDialogCustomText(
                         activity,
                         title = getString(activity, R.string.msg_permission_title),
                         message = if (grantedMessage.isNotEmpty()) {

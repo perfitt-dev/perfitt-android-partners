@@ -48,7 +48,7 @@
     <string name="msg_permission_storage">SD카드 내 이미지, 동영상 파일을 읽고 쓰기 위해 스토리지 접근 권한이 필요합니다.</string>
     <string name="msg_permission_denied_message">시스템 설정에서 해당 권한을 활성화해주세요.</string>
     <string name="msg_permission_title">권한 설정 안내</string>
-    <string name="msg_terms_plz_size_seleted">평소 신는 신발 사이즈를 선택해주세요.</string>
+    <string name="msg_sdk_terms_plz_size_seleted">평소 신는 신발 사이즈를 선택해주세요.</string>
 
     <!--Error-->
     <string name="error_network_server">서버 오류입니다.</string>

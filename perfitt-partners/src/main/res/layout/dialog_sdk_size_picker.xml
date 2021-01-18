@@ -12,9 +12,10 @@
         style="@style/h6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
         android:gravity="center"
-        android:text="@string/msg_terms_plz_size_seleted"
+        android:padding="8dp"
+        android:text="@string/msg_sdk_terms_plz_size_seleted"
+        android:textColor="@color/black_87"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
