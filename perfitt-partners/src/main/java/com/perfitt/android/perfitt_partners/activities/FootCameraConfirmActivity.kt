@@ -34,7 +34,8 @@ class FootCameraConfirmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foot_camera_confirm)
         onNewIntent(intent)
-        supportActionBar?.setTitle(if (type == A4DetectorActivity.TYPE_FOOT_RIGHT) R.string.activity_foot_camera_title_right_confirm else R.string.activity_foot_camera_title_left_confirm)
+//        supportActionBar?.setTitle(if (type == A4DetectorActivity.TYPE_FOOT_RIGHT) R.string.activity_foot_camera_title_right_confirm else R.string.activity_foot_camera_title_left_confirm)
+        supportActionBar?.hide()
         btn_next.setOnClickListener {
             if (type == A4DetectorActivity.TYPE_FOOT_RIGHT) {
                 if (parentType == LandingActivity.A4) {

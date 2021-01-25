@@ -103,7 +103,6 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
     private BorderedText borderedText;
     private AppCompatImageView img_circle, img_camera_disable, guide_test;
-    private ConstraintLayout layout_empty;
 
     private SensorManager sensorManager;
     private boolean isSensor = false;
@@ -178,17 +177,7 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
         super.onCreate(savedInstanceState);
         onNewIntent(getIntent());
         parentType = LandingActivity.KIT;
-        if (getSupportActionBar() != null) {
-            int titleRes;
-            if (viewType == TYPE_FOOT_RIGHT) {
-                PoolUtils.Companion.getInstance().clearRightLocations();
-                titleRes = R.string.activity_foot_camera_title_right;
-            } else {
-                PoolUtils.Companion.getInstance().clearLeftLocations();
-                titleRes = R.string.activity_foot_camera_title_left;
-            }
-            getSupportActionBar().setTitle(titleRes);
-        }
+
         String message;
         if (viewType == TYPE_FOOT_RIGHT) {
             message = getString(R.string.activity_foot_camera_title_right_message);
@@ -200,7 +189,6 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
         img_circle = findViewById(R.id.img_circle);
         img_camera_disable = findViewById(R.id.img_camera_disable);
-        layout_empty = findViewById(R.id.layout_empty);
 //        img_divider = findViewById(R.id.top_divider);
 //        img_divider.setVisibility(View.GONE);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -316,6 +304,7 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
                                 isBase = validationBase(mappedRecognitions.get(i));
 
                                 if (isBase) {
+                                    runUI(() -> btn_guide_4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0));
                                     if (viewType == TYPE_FOOT_RIGHT) {
                                         PoolUtils.Companion.getInstance().getRightFoot().setBaseModel(tfMappingModels.get(i));
                                     } else {
@@ -359,36 +348,35 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 //                                isTriangleDegree = validationTriangle(leftRect, rightRect);
 //                            }
                             if (!isTriangle) {
+                                runUI(() -> btn_guide_3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0));
                                 isTriangle = leftRect != null && rightRect != null;
                             }
                         }
 
                         if (isSensor) {
                             runUI(() -> {
-                                txt_status_sensor.setVisibility(View.INVISIBLE);
-                                txt_status_foot.setVisibility(View.INVISIBLE);
-                                txt_status_a4.setVisibility(View.INVISIBLE);
-                                txt_status_kit.setVisibility(View.INVISIBLE);
+                                btn_guide_1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0);
+                                btn_guide_2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
+                                btn_guide_3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
+                                btn_guide_4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
                             });
                             if (!isBase) {
                                 runUI(() -> {
+                                    // 가이드
                                     cameraValidation(false);
-                                    txt_status_a4.setText(R.string.activity_foot_camera_kit_validation_base);
-                                    txt_status_a4.setVisibility(View.VISIBLE);
+//                                    btn_guide_4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0);
                                 });
                             } else if (!isFoot) {
                                 runUI(() -> {
+                                    // 발
                                     cameraValidation(false);
-//                                    txt_status_foot.setVisibility(View.VISIBLE);
-                                    txt_status_a4.setText(R.string.activity_foot_camera_status_2);
-                                    txt_status_a4.setVisibility(View.VISIBLE);
+//                                    btn_guide_2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0);
                                 });
                             } else if (!isTriangle) {
                                 runUI(() -> {
+                                    // 조명
                                     cameraValidation(false);
-//                                    txt_status_foot.setVisibility(View.VISIBLE);
-                                    txt_status_a4.setText(R.string.activity_foot_camera_kit_validation_triangle);
-                                    txt_status_a4.setVisibility(View.VISIBLE);
+//                                    btn_guide_3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0);
                                 });
                             }
 //                            else if (!isTriangleDegree) {
@@ -400,17 +388,17 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
                             else {
                                 runUI(() -> {
                                     cameraValidation(true);
-                                    txt_status_a4.setVisibility(View.VISIBLE);
-                                    txt_status_a4.setText("버튼을 눌러 촬영해주세요.");
+                                    btn_guide_1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0);
+                                    btn_guide_2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0);
+                                    btn_guide_3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0);
+                                    btn_guide_4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0);
                                 });
                             }
                         } else {
                             runUI(() -> {
+                                // 수평
+                                btn_guide_1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
                                 cameraValidation(false);
-                                txt_status_sensor.setVisibility(View.VISIBLE);
-                                txt_status_foot.setVisibility(View.INVISIBLE);
-                                txt_status_a4.setVisibility(View.INVISIBLE);
-                                txt_status_kit.setVisibility(View.INVISIBLE);
                             });
                         }
 
@@ -510,8 +498,10 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
     private boolean validationFoot(Classifier.Recognition result) {
         if (result.getTitle().equals("b'foot'")) {
             // 발이 탐지 되었다면
+            runUI(() -> btn_guide_2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0));
             return true;
         } else {
+            runUI(() -> btn_guide_2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0));
             return false;
         }
     }
@@ -521,6 +511,7 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
             // 발판이 탐지 되었다면
             return validationGuide(result);
         } else {
+            runUI(() -> btn_guide_4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0));
             return false;
         }
     }
@@ -532,10 +523,7 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
             leftRect = new RectF();
             tracker.frameToCanvasMatrix.mapRect(leftRect, result.getLocation());
         } else {
-            runUI(() -> {
-                txt_status_kit.setVisibility(View.VISIBLE);
-                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_empty_left_triangle);
-            });
+            runUI(() -> btn_guide_3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0));
         }
         return leftRect;
     }
@@ -547,10 +535,7 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
             rightRect = new RectF();
             tracker.frameToCanvasMatrix.mapRect(rightRect, result.getLocation());
         } else {
-            runUI(() -> {
-                txt_status_kit.setVisibility(View.VISIBLE);
-                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_empty_right_triangle);
-            });
+            runUI(() -> btn_guide_3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0));
         }
         return rightRect;
     }
@@ -573,17 +558,17 @@ public class KitDetectorActivity extends CameraActivity implements OnImageAvaila
 
         if (leftRect.top < rightRect.top) {
             // 좌표의 각도가 -8 미만 인 경우
-            runUI(() -> {
-                txt_status_kit.setVisibility(View.VISIBLE);
-                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_triangle);
-            });
+//            runUI(() -> {
+//                txt_status_kit.setVisibility(View.VISIBLE);
+//                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_triangle);
+//            });
             return false;
         } else if (leftRect.top > rightRect.top) {
             // 좌표의 각도가 8도 초과 인 경우
-            runUI(() -> {
-                txt_status_kit.setVisibility(View.VISIBLE);
-                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_triangle);
-            });
+//            runUI(() -> {
+//                txt_status_kit.setVisibility(View.VISIBLE);
+//                txt_status_kit.setText(R.string.activity_foot_camera_kit_validation_triangle);
+//            });
             return false;
         }
         return false;

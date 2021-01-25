@@ -176,22 +176,23 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
         onNewIntent(getIntent());
         parentType = LandingActivity.A4;
         if (getSupportActionBar() != null) {
-            int titleRes;
-            if (viewType == TYPE_FOOT_RIGHT) {
-                titleRes = R.string.activity_foot_camera_title_right;
-            } else {
-                titleRes = R.string.activity_foot_camera_title_left;
-            }
-            getSupportActionBar().setTitle(titleRes);
+//            int titleRes;
+//            if (viewType == TYPE_FOOT_RIGHT) {
+//                titleRes = R.string.activity_foot_camera_title_right;
+//            } else {
+//                titleRes = R.string.activity_foot_camera_title_left;
+//            }
+//            getSupportActionBar().setTitle(titleRes);
+            getSupportActionBar().hide();
         }
-            String message;
-            if (viewType == TYPE_FOOT_RIGHT) {
-                message = getString(R.string.activity_foot_camera_title_right_message);
-            } else {
-                message = getString(R.string.activity_foot_camera_title_left_message);
-            }
+        String message;
+        if (viewType == TYPE_FOOT_RIGHT) {
+            message = getString(R.string.activity_foot_camera_title_right_message);
+        } else {
+            message = getString(R.string.activity_foot_camera_title_left_message);
+        }
 
-            DialogSDKUtil.Companion.getINSTANCE().showMessageDialog(this, "", message, null, null);
+        DialogSDKUtil.Companion.getINSTANCE().showMessageDialog(this, "", message, null, null);
 
         img_circle = findViewById(R.id.img_circle);
         img_camera_disable = findViewById(R.id.img_camera_disable);
@@ -298,8 +299,8 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
 
                         if (isSensor) {
                             runUI(() -> {
-                                txt_status_sensor.setVisibility(View.INVISIBLE);
-                                txt_status_foot.setVisibility(View.INVISIBLE);
+//                                txt_status_sensor.setVisibility(View.INVISIBLE);
+//                                txt_status_foot.setVisibility(View.INVISIBLE);
                                 txt_status_a4.setVisibility(View.INVISIBLE);
                             });
                             if (!isBase) {
@@ -312,7 +313,7 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
                                 runUI(() ->
                                 {
                                     cameraValidation(false);
-                                    txt_status_foot.setVisibility(View.VISIBLE);
+//                                    txt_status_foot.setVisibility(View.VISIBLE);
                                 });
                             } else {
                                 runUI(() -> {
@@ -324,8 +325,8 @@ public class A4DetectorActivity extends CameraActivity implements OnImageAvailab
                         } else {
                             runUI(() -> {
                                 cameraValidation(false);
-                                txt_status_sensor.setVisibility(View.VISIBLE);
-                                txt_status_foot.setVisibility(View.INVISIBLE);
+//                                txt_status_sensor.setVisibility(View.VISIBLE);
+//                                txt_status_foot.setVisibility(View.INVISIBLE);
                                 txt_status_a4.setVisibility(View.INVISIBLE);
                             });
                         }

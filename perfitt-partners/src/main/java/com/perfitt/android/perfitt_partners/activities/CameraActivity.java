@@ -43,9 +43,11 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Guideline;
 
 import com.perfitt.android.perfitt_partners.R;
@@ -54,6 +56,7 @@ import com.perfitt.android.perfitt_partners.fragment.LegacyCameraConnectionFragm
 import com.perfitt.android.perfitt_partners.utils.FileUtil;
 import com.perfitt.android.perfitt_partners.utils.ImageUtils;
 import com.perfitt.android.perfitt_partners.utils.Logger;
+import com.perfitt.android.perfitt_partners.utils.PoolUtils;
 
 import java.nio.ByteBuffer;
 
@@ -82,9 +85,11 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
     private int yRowStride;
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
-    AppCompatImageView img_divider,top_divider,left_divider,right_divider;
+    Toolbar toolbar;
+    AppCompatImageView img_divider, top_divider, left_divider, right_divider;
     AppCompatImageButton btn_camera, btnZoomIn, btnZoomOut;
-    AppCompatTextView txt_status_sensor, txt_status_foot, txt_status_a4, txt_status_kit;
+    AppCompatButton btn_guide_1, btn_guide_2, btn_guide_3, btn_guide_4;
+    AppCompatTextView txt_status_a4;
     Guideline guide_bottom, guide_top, guide_left, guide_right,
             guide_validation_top_in, guide_validation_top_out,
             guide_validation_left_in, guide_validation_left_out,
@@ -98,17 +103,34 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
         super.onCreate(null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.tfe_od_activity_camera);
+
+//        if (getSupportActionBar() != null) {
+//            int titleRes;
+//            if (viewType == TYPE_FOOT_RIGHT) {
+//                PoolUtils.Companion.getInstance().clearRightLocations();
+//                titleRes = R.string.activity_foot_camera_title_right;
+//            } else {
+//                PoolUtils.Companion.getInstance().clearLeftLocations();
+//                titleRes = R.string.activity_foot_camera_title_left;
+//            }
+//            getSupportActionBar().setTitle(titleRes);
+//        }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         btn_camera = findViewById(R.id.btn_camera);
         btnZoomIn = findViewById(R.id.btn_zoom_in);
         btnZoomOut = findViewById(R.id.btn_zoom_out);
-        txt_status_sensor = findViewById(R.id.txt_status_sensor);
-        txt_status_foot = findViewById(R.id.txt_status_foot);
         txt_status_a4 = findViewById(R.id.txt_status_a4);
-        txt_status_kit = findViewById(R.id.txt_status_kit);
         guide_bottom = findViewById(R.id.guide_bottom);
         guide_top = findViewById(R.id.guide_top);
         guide_left = findViewById(R.id.guide_left);
         guide_right = findViewById(R.id.guide_right);
+        btn_guide_1 = findViewById(R.id.btn_guide_1);
+        btn_guide_2 = findViewById(R.id.btn_guide_2);
+        btn_guide_3 = findViewById(R.id.btn_guide_3);
+        btn_guide_4 = findViewById(R.id.btn_guide_4);
         guide_validation_top_in = findViewById(R.id.guide_validation_top_in);
         guide_validation_left_in = findViewById(R.id.guide_validation_left_in);
         guide_validation_right_in = findViewById(R.id.guide_validation_right_in);

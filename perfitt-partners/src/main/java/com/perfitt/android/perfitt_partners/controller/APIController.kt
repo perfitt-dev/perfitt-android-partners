@@ -268,6 +268,6 @@ class APIController {
         private const val USERS_KIT = "$BASE_URL/core/v2/ml1/feet"
         private const val USERS_A4 = "$BASE_URL/core/v2/ml2/feet"
         private const val USERS = "$BASE_URL/core/v2/users"
-        const val TUTORIAL_URL = "https://service.perfitt.io/howtomeasure"
+        const val TUTORIAL_URL = "https://service.perfitt.io/app/guides?app=mobile"
     }
 }

@@ -140,7 +140,7 @@
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:background="@color/color_primary"
-            app:layout_constraintEnd_toEndOf="@+id/guide_right"
+            app:layout_constraintEnd_toEndOf="@+id/right_divider"
             app:layout_constraintStart_toStartOf="@+id/guide_left"
             app:layout_constraintTop_toBottomOf="@+id/guide_bottom" />
 
@@ -162,70 +162,84 @@
             app:layout_constraintStart_toStartOf="@+id/guide_right"
             app:layout_constraintTop_toTopOf="@+id/guide_top" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout_empty"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/black_20"
-            app:layout_constraintBottom_toBottomOf="@+id/container"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white_84"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            app:layout_constraintBottom_toTopOf="@+id/top_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/container">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txt_status_sensor"
-                style="@style/h6"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_guide_1"
+                style="@style/button"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_incomplete"
                 android:gravity="center"
-                android:text="@string/activity_foot_camera_status_1"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="@string/sdk_term_guide_1" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txt_status_foot"
-                style="@style/h6"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_guide_2"
+                style="@style/button"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_incomplete"
                 android:gravity="center"
-                android:text="@string/activity_foot_camera_status_2"
-                android:textColor="@color/white"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="@string/sdk_term_guide_2" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_guide_3"
+                style="@style/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_incomplete"
+                android:gravity="center"
+                android:text="@string/sdk_term_guide_3" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_guide_4"
+                style="@style/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_incomplete"
+                android:gravity="center"
+                android:text="@string/sdk_term_guide_4" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_status_a4"
                 style="@style/h6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
                 android:gravity="center"
                 android:text="@string/activity_foot_camera_status_3"
                 android:textColor="@color/white"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txt_status_kit"
-                style="@style/h6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatImageView

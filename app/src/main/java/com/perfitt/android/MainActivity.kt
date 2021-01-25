@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
         btn_native.setOnClickListener {
-            PerfittPartners.instance.runSdk()
+//            PerfittPartners.instance.runSdk(this, "")
         }
     }
 }

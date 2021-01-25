@@ -19,9 +19,8 @@ class TutorialWebViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view_tutorial)
         onNewIntent(intent)
-        btn_ok.setOnClickListener {
-            finish()
-        }
+//        supportActionBar?.title = getString(R.string.sdk_term_measure_guide)
+        supportActionBar?.hide()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -38,6 +37,11 @@ class TutorialWebViewActivity : AppCompatActivity() {
 
                     override fun onPageFinished(view: WebView?, url: String?) {
                         super.onPageFinished(view, url)
+                        url?.let {
+                            if (url.contains("/app/guides/start")) {
+                                finish()
+                            }
+                        }
                         progress_bar.visibility = View.INVISIBLE
                     }
                 }
@@ -53,10 +57,10 @@ class TutorialWebViewActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         when (landingType) {
-            LandingActivity.KIT ->{
+            LandingActivity.KIT -> {
                 startActivity(Intent(this, KitDetectorActivity::class.java))
             }
-            LandingActivity.A4 ->{
+            LandingActivity.A4 -> {
                 startActivity(Intent(this, A4DetectorActivity::class.java))
             }
         }

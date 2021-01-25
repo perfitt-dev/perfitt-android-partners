@@ -27,6 +27,8 @@ class FootResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foot_result)
         onNewIntent(intent)
+//        supportActionBar?.title = getString(R.string.sdk_term_foot_result)
+        supportActionBar?.hide()
 
         btn_retake.setOnClickListener {
             if (parentType == LandingActivity.A4) {
