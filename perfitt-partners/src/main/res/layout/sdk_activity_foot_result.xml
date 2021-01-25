@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/term_foot_info"
+        android:text="@string/sdk_term_foot_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,7 +26,7 @@
 
     <include
         android:id="@+id/layout_top"
-        layout="@layout/content_sdk_home_foot_data"
+        layout="@layout/sdk_content_sdk_home_foot_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/term_my_info"
+        android:text="@string/sdk_term_my_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
@@ -62,7 +62,7 @@
 
     <include
         android:id="@+id/layout_my_info"
-        layout="@layout/content_sdk_options"
+        layout="@layout/sdk_content_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -82,8 +82,8 @@
         android:background="@null"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
-        android:text="@string/term_ok"
-        android:textColor="@color/color_primary"
+        android:text="@string/sdk_term_ok"
+        android:textColor="@color/sdk_color_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_retake"
@@ -96,7 +96,7 @@
         android:background="@null"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
-        android:text="@string/term_retake"
+        android:text="@string/sdk_term_retake"
         android:textColor="@color/color_secondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_next"

@@ -19,11 +19,11 @@ import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.utils.DialogSDKUtil
 import com.perfitt.android.perfitt_partners.utils.FileUtil
 import com.perfitt.android.perfitt_partners.utils.PoolUtils
-import kotlinx.android.synthetic.main.activity_foot_camera_confirm.*
+import kotlinx.android.synthetic.main.sdk_activity_foot_camera_confirm.*
 import java.io.File
 
 
-class FootCameraConfirmActivity : AppCompatActivity() {
+class SDKFootCameraConfirmActivity : AppCompatActivity() {
     var parentType = ""
     var type = 0
     var progressDialog: AlertDialog? = null
@@ -32,26 +32,26 @@ class FootCameraConfirmActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_foot_camera_confirm)
+        setContentView(R.layout.sdk_activity_foot_camera_confirm)
         onNewIntent(intent)
 //        supportActionBar?.setTitle(if (type == A4DetectorActivity.TYPE_FOOT_RIGHT) R.string.activity_foot_camera_title_right_confirm else R.string.activity_foot_camera_title_left_confirm)
         supportActionBar?.hide()
         btn_next.setOnClickListener {
-            if (type == A4DetectorActivity.TYPE_FOOT_RIGHT) {
+            if (type == SDKA4DetectorActivity.TYPE_FOOT_RIGHT) {
                 if (parentType == LandingActivity.A4) {
-                    startActivity(Intent(this, A4DetectorActivity::class.java).apply {
-                        putExtra("type", A4DetectorActivity.TYPE_FOOT_LEFT)
+                    startActivity(Intent(this, SDKA4DetectorActivity::class.java).apply {
+                        putExtra("type", SDKA4DetectorActivity.TYPE_FOOT_LEFT)
                         putExtra("currentZoom", currentZoom)
                     })
                 } else {
-                    startActivity(Intent(this, KitDetectorActivity::class.java).apply {
-                        putExtra("type", KitDetectorActivity.TYPE_FOOT_LEFT)
+                    startActivity(Intent(this, SDKKitDetectorActivity::class.java).apply {
+                        putExtra("type", SDKKitDetectorActivity.TYPE_FOOT_LEFT)
                         putExtra("currentZoom", currentZoom)
                     })
                 }
                 finish()
             } else {
-                progressDialog = DialogSDKUtil.INSTANCE.showProgressMessage(this@FootCameraConfirmActivity, getString(R.string.term_progress_size))
+                progressDialog = DialogSDKUtil.INSTANCE.showProgressMessage(this@SDKFootCameraConfirmActivity, getString(R.string.sdk_term_progress_size))
                 var rightData = ""
                 var leftData = ""
                 FileUtil.instance.getFootFilePath(this).let {
@@ -74,7 +74,7 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                             APIController.instance.requestUsersA4(PerfittPartners.API_KEY, leftData, rightData, sourceType) { errorCode, errorType, errorMessage ->
                                 handler.post {
                                     progressDialog?.dismiss()
-                                    Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@SDKFootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         } else {
@@ -88,7 +88,7 @@ class FootCameraConfirmActivity : AppCompatActivity() {
                             ) { errorCode, errorType, errorMessage ->
                                 handler.post {
                                     progressDialog?.dismiss()
-                                    Toast.makeText(this@FootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@SDKFootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }
@@ -112,13 +112,13 @@ class FootCameraConfirmActivity : AppCompatActivity() {
 
         btn_retake.setOnClickListener {
             if (parentType == LandingActivity.A4) {
-                startActivity(Intent(this, A4DetectorActivity::class.java).apply {
-                    putExtra("type", this@FootCameraConfirmActivity.type)
+                startActivity(Intent(this, SDKA4DetectorActivity::class.java).apply {
+                    putExtra("type", this@SDKFootCameraConfirmActivity.type)
                     putExtra("currentZoom", currentZoom)
                 })
             } else {
-                startActivity(Intent(this, KitDetectorActivity::class.java).apply {
-                    putExtra("type", this@FootCameraConfirmActivity.type)
+                startActivity(Intent(this, SDKKitDetectorActivity::class.java).apply {
+                    putExtra("type", this@SDKFootCameraConfirmActivity.type)
                     putExtra("currentZoom", currentZoom)
                 })
             }

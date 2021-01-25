@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/term_progress_size" />
+        tools:text="@string/sdk_term_progress_size" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

@@ -10,7 +10,7 @@
 
     <application>
         <activity
-            android:name=".activities.A4DetectorActivity"
+            android:name=".activities.SDKA4DetectorActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -28,10 +28,10 @@
             android:name=".activities.FootResultActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.KitDetectorActivity"
+            android:name=".activities.SDKKitDetectorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.FootCameraConfirmActivity"
+            android:name=".activities.SDKFootCameraConfirmActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.TutorialWebViewActivity"

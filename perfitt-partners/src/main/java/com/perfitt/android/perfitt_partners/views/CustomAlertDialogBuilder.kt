@@ -28,7 +28,7 @@ class CustomAlertDialogBuilder : AlertDialog.Builder {
 
     @SuppressLint("InflateParams")
     constructor(activity: Activity) : super(activity) {
-        dialog = setView(LayoutInflater.from(activity).inflate(R.layout.dialog_basic, null, false).apply {
+        dialog = setView(LayoutInflater.from(activity).inflate(R.layout.sdk_dialog_basic, null, false).apply {
             layoutTitle = findViewById(R.id.layout_title)
             layoutMessage = findViewById(R.id.layout_message)
             txtTitle = findViewById(R.id.txt_title)

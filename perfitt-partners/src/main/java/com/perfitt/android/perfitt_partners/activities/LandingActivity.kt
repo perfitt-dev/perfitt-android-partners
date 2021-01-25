@@ -11,7 +11,7 @@ import com.perfitt.android.perfitt_partners.utils.PreferenceUtil
 class LandingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_landing)
+        setContentView(R.layout.sdk_activity_landing)
         onNewIntent(intent)
     }
 
@@ -22,7 +22,7 @@ class LandingActivity : AppCompatActivity() {
             when (it.getStringExtra(LANDING_TYPE)) {
                 A4 -> {
                     PermissionUtil.instance
-                        .setMessage(getString(R.string.msg_permission_camera))
+                        .setMessage(getString(R.string.sdk_msg_permission_camera))
                         .setPermissions(arrayListOf(Manifest.permission.CAMERA))
                         .onGranted {
                             startActivity(Intent(this, TutorialWebViewActivity::class.java).apply {
@@ -41,7 +41,7 @@ class LandingActivity : AppCompatActivity() {
                 }
                 KIT -> {
                     PermissionUtil.instance
-                        .setMessage(getString(R.string.msg_permission_camera))
+                        .setMessage(getString(R.string.sdk_msg_permission_camera))
                         .setPermissions(arrayListOf(Manifest.permission.CAMERA))
                         .onGranted {
                             startActivity(Intent(this, TutorialWebViewActivity::class.java).apply {

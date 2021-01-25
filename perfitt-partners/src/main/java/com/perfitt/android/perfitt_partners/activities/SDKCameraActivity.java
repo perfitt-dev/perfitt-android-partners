@@ -56,12 +56,11 @@ import com.perfitt.android.perfitt_partners.fragment.LegacyCameraConnectionFragm
 import com.perfitt.android.perfitt_partners.utils.FileUtil;
 import com.perfitt.android.perfitt_partners.utils.ImageUtils;
 import com.perfitt.android.perfitt_partners.utils.Logger;
-import com.perfitt.android.perfitt_partners.utils.PoolUtils;
 
 import java.nio.ByteBuffer;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public abstract class CameraActivity extends AppCompatActivity implements OnImageAvailableListener, Camera.PreviewCallback {
+public abstract class SDKCameraActivity extends AppCompatActivity implements OnImageAvailableListener, Camera.PreviewCallback {
     protected int viewType = TYPE_FOOT_RIGHT;
     public String parentType = "";
     private String fileName = "";
@@ -358,7 +357,7 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (shouldShowRequestPermissionRationale(PERMISSION_CAMERA)) {
                 Toast.makeText(
-                        CameraActivity.this,
+                        SDKCameraActivity.this,
                         "Camera permission is required for this demo",
                         Toast.LENGTH_LONG)
                         .show();
@@ -427,7 +426,7 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
                                 public void onPreviewSizeChosen(final Size size, final int rotation) {
                                     previewHeight = size.getHeight();
                                     previewWidth = size.getWidth();
-                                    CameraActivity.this.onPreviewSizeChosen(size, rotation);
+                                    SDKCameraActivity.this.onPreviewSizeChosen(size, rotation);
                                 }
                             },
                             this,
@@ -452,7 +451,7 @@ public abstract class CameraActivity extends AppCompatActivity implements OnImag
                         fileName = FileUtil.FILE_NAME_FOOT_LEFT;
                     }
 
-                    Intent intent = new Intent(this, FootCameraConfirmActivity.class);
+                    Intent intent = new Intent(this, SDKFootCameraConfirmActivity.class);
                     intent.putExtra("currentZoom", camera2Fragment.getZoomLevel());
                     intent.putExtra("type", viewType);
                     intent.putExtra("fileName", fileName);

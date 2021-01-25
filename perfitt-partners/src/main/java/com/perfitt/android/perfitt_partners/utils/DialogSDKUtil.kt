@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.perfitt.android.perfitt_partners.R
 import com.perfitt.android.perfitt_partners.views.CustomAlertDialogBuilder
-import kotlinx.android.synthetic.main.dialog_progress_message.view.*
-import kotlinx.android.synthetic.main.dialog_sdk_size_picker.view.*
-import kotlinx.android.synthetic.main.dialog_update_foot_profile.view.*
+import kotlinx.android.synthetic.main.sdk_dialog_progress_message.view.*
+import kotlinx.android.synthetic.main.sdk_dialog_sdk_size_picker.view.*
+import kotlinx.android.synthetic.main.sdk_dialog_update_foot_profile.view.*
 
 
 class DialogSDKUtil {
@@ -27,7 +27,7 @@ class DialogSDKUtil {
                     onConfirm?.invoke()
                 }
                 if (onCancel != null) {
-                    setNegative(R.string.term_cancel)
+                    setNegative(R.string.sdk_term_cancel)
                     onNegative {
                         dialog.dismiss()
                         onCancel()
@@ -86,7 +86,7 @@ class DialogSDKUtil {
      */
     fun showProgressMessage(activity: Activity?, message: String): AlertDialog? {
         activity?.let {
-            LayoutInflater.from(activity).inflate(R.layout.dialog_progress_message, null, false).run {
+            LayoutInflater.from(activity).inflate(R.layout.sdk_dialog_progress_message, null, false).run {
                 txt_message.text = message
                 val dialog = CustomAlertDialogBuilder(activity, this).dialog
                 dialog.setCanceledOnTouchOutside(false)
@@ -104,11 +104,11 @@ class DialogSDKUtil {
      */
     fun showUpdateFootProfile(activity: Activity?, name: String?, gender: String?, averageSize: Int?, updateUnit: (name: String?, gender: String?, averageSize: Int) -> Unit) {
         activity?.let {
-            LayoutInflater.from(activity).inflate(R.layout.dialog_update_foot_profile, null, false).run {
+            LayoutInflater.from(activity).inflate(R.layout.sdk_dialog_update_foot_profile, null, false).run {
                 CustomAlertDialogBuilder(activity, this).apply {
-                    setCustomTitle(R.string.msg_dialog_update_foot_profile_title)
-                    setPositive(R.string.term_ok)
-                    setNegative(R.string.term_cancel)
+                    setCustomTitle(R.string.sdk_msg_dialog_update_foot_profile_title)
+                    setPositive(R.string.sdk_term_ok)
+                    setNegative(R.string.sdk_term_cancel)
 
                     name?.let {
                         edit_name.setText(it)
@@ -142,7 +142,7 @@ class DialogSDKUtil {
                             updateUnit(pName, pGender, pAverageSize)
                             dialog.dismiss()
                         } else {
-                            Toast.makeText(context, context.getString(R.string.msg_dialog_empty_avg_size), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.sdk_msg_dialog_empty_avg_size), Toast.LENGTH_SHORT).show()
                         }
                     }
                     onNegative {
@@ -161,7 +161,7 @@ class DialogSDKUtil {
     fun showSizePicker(activity: Activity?, size: String, onPositive: (size: String) -> Unit) {
         activity?.let {
             val sizes = activity.resources.getStringArray(R.array.size)
-            LayoutInflater.from(activity).inflate(R.layout.dialog_sdk_size_picker, null, false).run {
+            LayoutInflater.from(activity).inflate(R.layout.sdk_dialog_sdk_size_picker, null, false).run {
                 CustomAlertDialogBuilder(activity, this).apply {
                     number_picker.run {
                         minValue = 0
@@ -179,7 +179,7 @@ class DialogSDKUtil {
                         }
                     }
                     goneNegative()
-                    setPositive(R.string.term_ok)
+                    setPositive(R.string.sdk_term_ok)
                     onPositive {
                         onPositive.invoke(sizes[number_picker.value])
                         dialog.dismiss()

@@ -298,6 +298,6 @@
     <!--Radio-->
     <style name="radio" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textAppearance">@style/body_2</item>
-        <item name="android:colorControlActivated">@color/color_primary</item>
+        <item name="android:colorControlActivated">@color/sdk_color_primary</item>
     </style>
 </resources>

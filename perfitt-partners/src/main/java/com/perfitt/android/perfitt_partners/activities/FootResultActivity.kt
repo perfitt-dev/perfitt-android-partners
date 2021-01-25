@@ -12,9 +12,9 @@ import com.perfitt.android.perfitt_partners.R
 import com.perfitt.android.perfitt_partners.controller.APIController
 import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.models.ResponseFeet
-import kotlinx.android.synthetic.main.activity_foot_result.*
-import kotlinx.android.synthetic.main.content_sdk_home_foot_data.*
-import kotlinx.android.synthetic.main.content_sdk_options.*
+import kotlinx.android.synthetic.main.sdk_activity_foot_result.*
+import kotlinx.android.synthetic.main.sdk_content_sdk_home_foot_data.*
+import kotlinx.android.synthetic.main.sdk_content_options.*
 import org.json.JSONObject
 
 class FootResultActivity : AppCompatActivity() {
@@ -25,19 +25,19 @@ class FootResultActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_foot_result)
+        setContentView(R.layout.sdk_activity_foot_result)
         onNewIntent(intent)
 //        supportActionBar?.title = getString(R.string.sdk_term_foot_result)
         supportActionBar?.hide()
 
         btn_retake.setOnClickListener {
             if (parentType == LandingActivity.A4) {
-                startActivity(Intent(this, A4DetectorActivity::class.java).apply {
+                startActivity(Intent(this, SDKA4DetectorActivity::class.java).apply {
                     putExtra("type", this.type)
                     putExtra("currentZoom", currentZoom)
                 })
             } else {
-                startActivity(Intent(this, KitDetectorActivity::class.java).apply {
+                startActivity(Intent(this, SDKKitDetectorActivity::class.java).apply {
                     putExtra("type", type)
                     putExtra("currentZoom", currentZoom)
                 })
@@ -93,12 +93,12 @@ class FootResultActivity : AppCompatActivity() {
                 feetId = id
                 feet?.run {
                     left?.run {
-                        txt_start_length.text = String.format(getString(R.string.term_mm), length?.toInt().toString())
-                        txt_start_width.text = String.format(getString(R.string.term_mm), width?.toInt().toString())
+                        txt_start_length.text = String.format(getString(R.string.sdk_term_mm), length?.toInt().toString())
+                        txt_start_width.text = String.format(getString(R.string.sdk_term_mm), width?.toInt().toString())
                     }
                     right?.run {
-                        txt_end_length.text = String.format(getString(R.string.term_mm), length?.toInt().toString())
-                        txt_end_width.text = String.format(getString(R.string.term_mm), width?.toInt().toString())
+                        txt_end_length.text = String.format(getString(R.string.sdk_term_mm), length?.toInt().toString())
+                        txt_end_width.text = String.format(getString(R.string.sdk_term_mm), width?.toInt().toString())
                     }
                 }
             }

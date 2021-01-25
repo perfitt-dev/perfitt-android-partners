@@ -14,7 +14,7 @@
         android:paddingStart="30dp"
         android:paddingTop="30dp"
         android:textAppearance="@style/h6"
-        android:textColor="@color/color_primary"
+        android:textColor="@color/sdk_color_primary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="TITLE"/>

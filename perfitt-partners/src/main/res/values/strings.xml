@@ -1,24 +1,24 @@
 <resources>
     <!-- Terms -->
-    <string name="term_progress_size">사이즈를 분석 중입니다..</string>
-    <string name="term_cancel">취소</string>
-    <string name="term_settings">설정</string>
-    <string name="term_close">닫기</string>
-    <string name="term_retake">재촬영</string>
-    <string name="term_ok">확인</string>
-    <string name="term_gender">성별</string>
-    <string name="term_male">남성</string>
-    <string name="term_female">여성</string>
-    <string name="term_unisex">남녀공용</string>
-    <string name="term_shoe_size_select">주로 신는 사이즈</string>
-    <string name="term_name">이름</string>
-    <string name="term_left_foot">왼발</string>
-    <string name="term_right_foot">오른발</string>
-    <string name="term_length">길이</string>
-    <string name="term_width">너비</string>
-    <string name="term_foot_info">발 정보</string>
-    <string name="term_my_info">내 정보</string>
-    <string name="term_mm">%smm</string>
+    <string name="sdk_term_progress_size">사이즈를 분석 중입니다..</string>
+    <string name="sdk_term_cancel">취소</string>
+    <string name="sdk_term_settings">설정</string>
+    <string name="sdk_term_close">닫기</string>
+    <string name="sdk_term_retake">재촬영</string>
+    <string name="sdk_term_ok">확인</string>
+    <string name="sdk_term_gender">성별</string>
+    <string name="sdk_term_male">남성</string>
+    <string name="sdk_term_female">여성</string>
+    <string name="sdk_term_unisex">남녀공용</string>
+    <string name="sdk_term_shoe_size_select">주로 신는 사이즈</string>
+    <string name="sdk_term_name">이름</string>
+    <string name="sdk_term_left_foot">왼발</string>
+    <string name="sdk_term_right_foot">오른발</string>
+    <string name="sdk_term_length">길이</string>
+    <string name="sdk_term_width">너비</string>
+    <string name="sdk_term_foot_info">발 정보</string>
+    <string name="sdk_term_my_info">내 정보</string>
+    <string name="sdk_term_mm">%smm</string>
     <string name="sdk_term_foot_result">측정 결과</string>
     <string name="sdk_term_measure_guide">촬영 가이드</string>
     <string name="sdk_term_guide_1">수평</string>
@@ -27,37 +27,37 @@
     <string name="sdk_term_guide_4">가이드</string>
 
     <!--Message -->
-    <string name="msg_dialog_update_foot_profile_caption">주로 신는 사이즈 기준으로 펄핏 추천 사이즈가 변경되오니, 정확하게 입력 부탁드립니다.</string>
-    <string name="msg_dialog_update_foot_profile_title">내 발 정보 편집하기</string>
-    <string name="msg_dialog_empty_avg_size">주로 신는 사이즈를 입력해주세요.</string>
+    <string name="sdk_msg_dialog_update_foot_profile_caption">주로 신는 사이즈 기준으로 펄핏 추천 사이즈가 변경되오니, 정확하게 입력 부탁드립니다.</string>
+    <string name="sdk_msg_dialog_update_foot_profile_title">내 발 정보 편집하기</string>
+    <string name="sdk_msg_dialog_empty_avg_size">주로 신는 사이즈를 입력해주세요.</string>
 
     <!--Foot Camera-->
-    <string name="activity_foot_camera_title_left">왼발 촬영하기</string>
-    <string name="activity_foot_camera_title_right">오른발 촬영하기</string>
-    <string name="activity_foot_camera_title_right_confirm">오른발 촬영결과</string>
-    <string name="activity_foot_camera_title_left_confirm">왼발 촬영결과</string>
-    <string name="activity_foot_camera_title_left_message">왼발을 촬영해주세요.</string>
-    <string name="activity_foot_camera_title_right_message">오른발을 촬영해주세요.</string>
-    <string name="activity_foot_camera_status_1">수평을 맞춰주세요.</string>
-    <string name="activity_foot_camera_status_2">발이 화면에 탐지되지 않았습니다.</string>
-    <string name="activity_foot_camera_status_3">A4 상단 모서리가 가이드 선과 닿지 않습니다.</string>
-    <string name="activity_foot_camera_kit_validation_base">발판 윗 부분을 가이드 라인에 잘 맞춰 놓아주세요.</string>
-    <string name="activity_foot_camera_kit_validation_empty_left_triangle">왼쪽 삼각형이 탐지되지 않았습니다.</string>
-    <string name="activity_foot_camera_kit_validation_empty_right_triangle">오른쪽 삼각형이 탐지되지 않았습니다.</string>
-    <string name="activity_foot_camera_kit_validation_degree_right_triangle">발판이 오른쪽으로 기울어졌습니다. 수평으로 맞춰 촬영해 주세요.</string>
-    <string name="activity_foot_camera_kit_validation_degree_left_triangle">발판이 왼쪽으로 기울어졌습니다. 수평으로 맞춰 촬영해 주세요.</string>
-    <string name="activity_foot_camera_kit_validation_triangle">빛에 삼각형이 반사되거나 그림자에 가려져 있지 않은지 확인해 주세요.</string>
+    <string name="sdk_activity_foot_camera_title_left">왼발 촬영하기</string>
+    <string name="sdk_activity_foot_camera_title_right">오른발 촬영하기</string>
+    <string name="sdk_activity_foot_camera_title_right_confirm">오른발 촬영결과</string>
+    <string name="sdk_activity_foot_camera_title_left_confirm">왼발 촬영결과</string>
+    <string name="sdk_activity_foot_camera_title_left_message">왼발을 촬영해주세요.</string>
+    <string name="sdk_activity_foot_camera_title_right_message">오른발을 촬영해주세요.</string>
+    <string name="sdk_activity_foot_camera_status_1">수평을 맞춰주세요.</string>
+    <string name="sdk_activity_foot_camera_status_2">발이 화면에 탐지되지 않았습니다.</string>
+    <string name="sdk_activity_foot_camera_status_3">A4 상단 모서리가 가이드 선과 닿지 않습니다.</string>
+    <string name="sdk_activity_foot_camera_kit_validation_base">발판 윗 부분을 가이드 라인에 잘 맞춰 놓아주세요.</string>
+    <string name="sdk_activity_foot_camera_kit_validation_empty_left_triangle">왼쪽 삼각형이 탐지되지 않았습니다.</string>
+    <string name="sdk_activity_foot_camera_kit_validation_empty_right_triangle">오른쪽 삼각형이 탐지되지 않았습니다.</string>
+    <string name="sdk_activity_foot_camera_kit_validation_degree_right_triangle">발판이 오른쪽으로 기울어졌습니다. 수평으로 맞춰 촬영해 주세요.</string>
+    <string name="sdk_activity_foot_camera_kit_validation_degree_left_triangle">발판이 왼쪽으로 기울어졌습니다. 수평으로 맞춰 촬영해 주세요.</string>
+    <string name="sdk_activity_foot_camera_kit_validation_triangle">빛에 삼각형이 반사되거나 그림자에 가려져 있지 않은지 확인해 주세요.</string>
 
     <!--Permission-->
-    <string name="msg_permission_camera">카메라 사용 권한이 필요합니다.</string>
-    <string name="msg_permission_location">사용자의 위치 정보 사용 권한이 필요합니다.</string>
-    <string name="msg_permission_storage">SD카드 내 이미지, 동영상 파일을 읽고 쓰기 위해 스토리지 접근 권한이 필요합니다.</string>
-    <string name="msg_permission_denied_message">시스템 설정에서 해당 권한을 활성화해주세요.</string>
-    <string name="msg_permission_title">권한 설정 안내</string>
-    <string name="msg_sdk_terms_plz_size_seleted">평소 신는 신발 사이즈를 선택해주세요.</string>
+    <string name="sdk_msg_permission_camera">카메라 사용 권한이 필요합니다.</string>
+    <string name="sdk_msg_permission_location">사용자의 위치 정보 사용 권한이 필요합니다.</string>
+    <string name="sdk_msg_permission_storage">SD카드 내 이미지, 동영상 파일을 읽고 쓰기 위해 스토리지 접근 권한이 필요합니다.</string>
+    <string name="sdk_msg_permission_denied_message">시스템 설정에서 해당 권한을 활성화해주세요.</string>
+    <string name="sdk_msg_permission_title">권한 설정 안내</string>
+    <string name="sdk_msg_sdk_terms_plz_size_seleted">평소 신는 신발 사이즈를 선택해주세요.</string>
 
     <!--Error-->
-    <string name="error_network_server">서버 오류입니다.</string>
+    <string name="sdk_error_network_server">서버 오류입니다.</string>
     <string name="tfe_od_app_name" translation_description="Object Detection demo app [CHAR_LIMIT=40]">TFL Detect</string>
     <string name="tfe_od_camera_error" translation_description="Error regarding camera support[CHAR_LIMIT=40]">This device doesn\'t support Camera2 API.</string>
 </resources>

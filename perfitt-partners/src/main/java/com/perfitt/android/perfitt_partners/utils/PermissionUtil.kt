@@ -109,7 +109,7 @@ class PermissionUtil {
                 if (!activity.isFinishing) {
                     DialogSDKUtil.INSTANCE.showMessageDialog(
                             activity,
-                            title = getString(activity, R.string.msg_permission_title),
+                            title = getString(activity, R.string.sdk_msg_permission_title),
                             message = grantedMessage,
                             onConfirm = {
                                 requestPermissions(deniedPermissions.toTypedArray())
@@ -142,15 +142,15 @@ class PermissionUtil {
                 // 거절된 퍼미션이 존재하면
                 DialogSDKUtil.INSTANCE.showMessageDialogCustomText(
                         activity,
-                        title = getString(activity, R.string.msg_permission_title),
+                        title = getString(activity, R.string.sdk_msg_permission_title),
                         message = if (grantedMessage.isNotEmpty()) {
-                            grantedMessage + "\n\n" + getString(activity, R.string.msg_permission_denied_message)
+                            grantedMessage + "\n\n" + getString(activity, R.string.sdk_msg_permission_denied_message)
                         } else {
                             // 다이얼로그 설정을 안했다면
-                            getString(activity, R.string.msg_permission_denied_message)
+                            getString(activity, R.string.sdk_msg_permission_denied_message)
                         },
-                        positiveText = getString(activity, R.string.term_settings),
-                        negativeText = getString(activity, R.string.term_close),
+                        positiveText = getString(activity, R.string.sdk_term_settings),
+                        negativeText = getString(activity, R.string.sdk_term_close),
                         onConfirm = {
                             systemPermissionSettingsUnit?.invoke()
                             activity.startActivityForResult(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {

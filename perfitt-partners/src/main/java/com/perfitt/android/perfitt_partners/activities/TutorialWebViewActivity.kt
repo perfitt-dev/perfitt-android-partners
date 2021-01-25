@@ -11,13 +11,13 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.perfitt.android.perfitt_partners.R
 import com.perfitt.android.perfitt_partners.controller.APIController
-import kotlinx.android.synthetic.main.activity_web_view_tutorial.*
+import kotlinx.android.synthetic.main.sdk_activity_web_view_tutorial.*
 
 class TutorialWebViewActivity : AppCompatActivity() {
     private var landingType = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web_view_tutorial)
+        setContentView(R.layout.sdk_activity_web_view_tutorial)
         onNewIntent(intent)
 //        supportActionBar?.title = getString(R.string.sdk_term_measure_guide)
         supportActionBar?.hide()
@@ -58,10 +58,10 @@ class TutorialWebViewActivity : AppCompatActivity() {
     override fun onDestroy() {
         when (landingType) {
             LandingActivity.KIT -> {
-                startActivity(Intent(this, KitDetectorActivity::class.java))
+                startActivity(Intent(this, SDKKitDetectorActivity::class.java))
             }
             LandingActivity.A4 -> {
-                startActivity(Intent(this, A4DetectorActivity::class.java))
+                startActivity(Intent(this, SDKA4DetectorActivity::class.java))
             }
         }
         super.onDestroy()

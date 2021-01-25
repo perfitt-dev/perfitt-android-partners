@@ -36,7 +36,7 @@ class FontableNumberPicker : NumberPicker {
             fields.forEach {
                 if (it.name == "mSelectionDivider") {
                     it.isAccessible = true
-                    it.set(this, ColorDrawable(ContextCompat.getColor(context, R.color.color_primary)))
+                    it.set(this, ColorDrawable(ContextCompat.getColor(context, R.color.sdk_color_primary)))
                 }
             }
         }

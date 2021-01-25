@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="8dp"
-        android:text="@string/msg_sdk_terms_plz_size_seleted"
+        android:text="@string/sdk_msg_sdk_terms_plz_size_seleted"
         android:textColor="@color/black_87"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
 
     <include
         android:id="@+id/layout_button"
-        layout="@layout/view_dialog_button"
+        layout="@layout/sdk_view_dialog_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

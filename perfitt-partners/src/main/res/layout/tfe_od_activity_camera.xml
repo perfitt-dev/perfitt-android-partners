@@ -122,7 +122,7 @@
             android:id="@+id/guide_validation_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_primary"
+            android:background="@color/sdk_color_primary"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
@@ -130,7 +130,7 @@
             android:id="@+id/top_divider"
             android:layout_width="0dp"
             android:layout_height="4dp"
-            android:background="@color/color_primary"
+            android:background="@color/sdk_color_primary"
             app:layout_constraintEnd_toEndOf="@+id/guide_right"
             app:layout_constraintStart_toStartOf="@+id/guide_left"
             app:layout_constraintTop_toBottomOf="@+id/guide_top" />
@@ -139,7 +139,7 @@
             android:id="@+id/bottom_divider"
             android:layout_width="0dp"
             android:layout_height="4dp"
-            android:background="@color/color_primary"
+            android:background="@color/sdk_color_primary"
             app:layout_constraintEnd_toEndOf="@+id/right_divider"
             app:layout_constraintStart_toStartOf="@+id/guide_left"
             app:layout_constraintTop_toBottomOf="@+id/guide_bottom" />
@@ -148,7 +148,7 @@
             android:id="@+id/left_divider"
             android:layout_width="4dp"
             android:layout_height="0dp"
-            android:background="@color/color_primary"
+            android:background="@color/sdk_color_primary"
             app:layout_constraintBottom_toBottomOf="@+id/guide_bottom"
             app:layout_constraintStart_toStartOf="@+id/guide_left"
             app:layout_constraintTop_toTopOf="@+id/guide_top" />
@@ -157,7 +157,7 @@
             android:id="@+id/right_divider"
             android:layout_width="4dp"
             android:layout_height="0dp"
-            android:background="@color/color_primary"
+            android:background="@color/sdk_color_primary"
             app:layout_constraintBottom_toBottomOf="@+id/guide_bottom"
             app:layout_constraintStart_toStartOf="@+id/guide_right"
             app:layout_constraintTop_toTopOf="@+id/guide_top" />
@@ -232,7 +232,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/activity_foot_camera_status_3"
+                android:text="@string/sdk_activity_foot_camera_status_3"
                 android:textColor="@color/white"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -282,7 +282,7 @@
         android:id="@+id/progress_bar"
         android:layout_width="85dp"
         android:layout_height="85dp"
-        android:indeterminateTint="@color/color_primary"
+        android:indeterminateTint="@color/sdk_color_primary"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/btn_camera"
         app:layout_constraintEnd_toEndOf="@+id/btn_camera"

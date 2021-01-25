@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--red-->
-    <color name="color_primary">#ED001E</color>
-    <color name="color_primary_light">#ff5648</color>
-    <color name="color_primary_dark">#b10000</color>
-    <color name="color_accent">#D81B60</color>
-    <color name="scarlet">#b00020</color>
-    <color name="color_primary_2">#CCED001E</color>
-    <color name="color_primary_10">#19ed001e</color>
+    <color name="sdk_color_primary">#ED001E</color>
+    <color name="sdk_color_primary_light">#ff5648</color>
+    <color name="sdk_color_primary_dark">#b10000</color>
+    <color name="sdk_color_accent">#D81B60</color>
+    <color name="sdk_scarlet">#b00020</color>
+    <color name="sdk_color_primary_2">#CCED001E</color>
+    <color name="sdk_color_primary_10">#19ed001e</color>
 
     <!--black-->
     <color name="color_secondary">#323232</color>
