@@ -3,6 +3,7 @@ package com.perfitt.android.perfitt_partners.activities
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.perfitt.android.perfitt_partners.R
 import com.perfitt.android.perfitt_partners.utils.PermissionUtil
@@ -59,6 +60,10 @@ class LandingActivity : AppCompatActivity() {
                         .checkToPermissions(this as AppCompatActivity)
                 }
             }
+        } ?: run {
+            Handler().postDelayed(Runnable {
+                finish()
+            }, 3000)
         }
     }
 

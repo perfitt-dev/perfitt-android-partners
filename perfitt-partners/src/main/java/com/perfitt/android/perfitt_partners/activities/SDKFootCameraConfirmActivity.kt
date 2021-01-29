@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
@@ -51,7 +50,9 @@ class SDKFootCameraConfirmActivity : AppCompatActivity() {
                 }
                 finish()
             } else {
-                progressDialog = DialogSDKUtil.INSTANCE.showProgressMessage(this@SDKFootCameraConfirmActivity, getString(R.string.sdk_term_progress_size))
+                runOnUiThread {
+                    progressDialog = DialogSDKUtil.INSTANCE.showProgressMessage(this@SDKFootCameraConfirmActivity, getString(R.string.sdk_term_progress_size))
+                }
                 var rightData = ""
                 var leftData = ""
                 FileUtil.instance.getFootFilePath(this).let {
@@ -67,14 +68,22 @@ class SDKFootCameraConfirmActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    val handler = Handler()
                     Thread(Runnable {
                         val sourceType = packageManager.getPackageInfo(packageName, 0).versionName + "_" + Build.MODEL + "_android-" + Build.VERSION.SDK_INT
                         val response = if (parentType == LandingActivity.A4) {
                             APIController.instance.requestUsersA4(PerfittPartners.API_KEY, leftData, rightData, sourceType) { errorCode, errorType, errorMessage ->
-                                handler.post {
+                                runOnUiThread {
                                     progressDialog?.dismiss()
-                                    Toast.makeText(this@SDKFootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
+                                    DialogSDKUtil.INSTANCE.showMessageDialogCustomText(this,
+                                        getString(R.string.sdk_msg_dialog_foot_measure_error_title),
+                                        getString(R.string.sdk_msg_dialog_foot_measure_error_message),
+                                        getString(R.string.sdk_msg_dialog_foot_measure_error_button), "", {
+                                            startActivity(Intent(this, SDKKitDetectorActivity::class.java).apply {
+                                                putExtra("type", SDKCameraActivity.TYPE_FOOT_RIGHT)
+                                                putExtra("currentZoom", currentZoom)
+                                            })
+                                            finish()
+                                        })
                                 }
                             }
                         } else {
@@ -86,14 +95,23 @@ class SDKFootCameraConfirmActivity : AppCompatActivity() {
                                 PoolUtils.instance.leftFoot,
                                 PoolUtils.instance.rightFoot
                             ) { errorCode, errorType, errorMessage ->
-                                handler.post {
+                                runOnUiThread {
                                     progressDialog?.dismiss()
-                                    Toast.makeText(this@SDKFootCameraConfirmActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
+                                    DialogSDKUtil.INSTANCE.showMessageDialogCustomText(this,
+                                        getString(R.string.sdk_msg_dialog_foot_measure_error_title),
+                                        getString(R.string.sdk_msg_dialog_foot_measure_error_message),
+                                        getString(R.string.sdk_msg_dialog_foot_measure_error_button), "", {
+                                            startActivity(Intent(this, SDKKitDetectorActivity::class.java).apply {
+                                                putExtra("type", SDKCameraActivity.TYPE_FOOT_RIGHT)
+                                                putExtra("currentZoom", currentZoom)
+                                            })
+                                            finish()
+                                        })
                                 }
                             }
                         }
                         response?.let { response ->
-                            handler.post {
+                            runOnUiThread {
                                 Log.d("Dony", "response:$response")
                                 progressDialog?.dismiss()
                                 startActivity(Intent(this, FootResultActivity::class.java).apply {
@@ -142,6 +160,7 @@ class SDKFootCameraConfirmActivity : AppCompatActivity() {
             it.getIntExtra("currentZoom", 0).let { zoom ->
                 currentZoom = zoom
             }
+
             type = it.getIntExtra("type", 0)
             parentType = it.getStringExtra("parentType")
         }

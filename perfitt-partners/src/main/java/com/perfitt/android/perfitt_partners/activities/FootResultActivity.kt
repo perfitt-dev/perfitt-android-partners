@@ -2,7 +2,6 @@ package com.perfitt.android.perfitt_partners.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -13,8 +12,8 @@ import com.perfitt.android.perfitt_partners.controller.APIController
 import com.perfitt.android.perfitt_partners.controller.PerfittPartners
 import com.perfitt.android.perfitt_partners.models.ResponseFeet
 import kotlinx.android.synthetic.main.sdk_activity_foot_result.*
-import kotlinx.android.synthetic.main.sdk_content_sdk_home_foot_data.*
 import kotlinx.android.synthetic.main.sdk_content_options.*
+import kotlinx.android.synthetic.main.sdk_content_sdk_home_foot_data.*
 import org.json.JSONObject
 
 class FootResultActivity : AppCompatActivity() {
@@ -48,7 +47,6 @@ class FootResultActivity : AppCompatActivity() {
         btn_next.setOnClickListener {
             val gender = if (radio_male.isChecked) "M" else if (radio_female.isChecked) "F" else ""
             val nickName = edit_name.text.toString()
-            val handler = Handler()
             progress_bar.visibility = View.VISIBLE
             Thread(Runnable {
                 val response = APIController.instance.requestCreateUsers(
@@ -59,13 +57,13 @@ class FootResultActivity : AppCompatActivity() {
                     gender,
                     PerfittPartners.CUSTOMER_ID
                 ) { errorCode, errorType, errorMessage ->
-                    handler.post {
+                    runOnUiThread {
                         progress_bar.visibility = View.GONE
                         Toast.makeText(this@FootResultActivity, "errorCode:$errorCode \n errorMessage$errorMessage", Toast.LENGTH_SHORT).show()
                     }
                 }
                 response?.let { response ->
-                    handler.post {
+                    runOnUiThread {
                         progress_bar.visibility = View.GONE
                         Log.d("Dony", "response:$response")
                         JSONObject(response).getString("id").let { id ->

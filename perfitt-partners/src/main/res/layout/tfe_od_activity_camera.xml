@@ -165,18 +165,18 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout_empty"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/white_84"
+            android:background="@drawable/rect_all_corner_filled_gray"
             android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
             android:weightSum="4"
-            app:layout_constraintBottom_toTopOf="@+id/top_divider"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/container">
+            app:layout_constraintTop_toBottomOf="@+id/bottom_divider">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_guide_1"
@@ -240,6 +240,32 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_zoom_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_zoom_out"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_zoom_in"
+            app:layout_constraintEnd_toStartOf="@+id/btn_zoom_in"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="UnusedAttribute" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_zoom_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_zoom_in"
+            app:layout_constraintBottom_toTopOf="@+id/top_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_zoom_out"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UnusedAttribute" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -288,31 +314,5 @@
         app:layout_constraintEnd_toEndOf="@+id/btn_camera"
         app:layout_constraintStart_toStartOf="@+id/btn_camera"
         app:layout_constraintTop_toTopOf="@+id/btn_camera" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_zoom_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:foreground="?attr/selectableItemBackground"
-        android:src="@drawable/ic_zoom_out"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_zoom_in"
-        app:layout_constraintEnd_toStartOf="@+id/btn_zoom_in"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="UnusedAttribute" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_zoom_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="143dp"
-        android:background="@null"
-        android:foreground="?attr/selectableItemBackground"
-        android:src="@drawable/ic_zoom_in"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_zoom_out"
-        tools:ignore="UnusedAttribute" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

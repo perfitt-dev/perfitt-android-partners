@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 //            loadUrl("https://perfitt-static-files.s3.ap-northeast-2.amazonaws.com/resources/clutter/test.html")
             loadUrl("http://m.sgumg.cafe24.com/")
         }
-        PerfittPartners.instance.initialize(this, "PARTNERS_TEST_KEY")
+        PerfittPartners.instance.initialize(this, "PERFITT_CORE_ACCESS_KEY")
         PerfittPartners.instance.onConfirm(object : ConfirmListener {
             override fun onConfirm(url: String) {
                 Log.d("Dony", "url:$url")
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
         btn_native.setOnClickListener {
-//            PerfittPartners.instance.runSdk(this, "")
+            PerfittPartners.instance.runSdk(this, "")
         }
     }
 }

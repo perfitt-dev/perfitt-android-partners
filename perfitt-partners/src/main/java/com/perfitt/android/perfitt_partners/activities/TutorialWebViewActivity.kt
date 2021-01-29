@@ -39,6 +39,14 @@ class TutorialWebViewActivity : AppCompatActivity() {
                         super.onPageFinished(view, url)
                         url?.let {
                             if (url.contains("/app/guides/start")) {
+                                when (landingType) {
+                                    LandingActivity.KIT -> {
+                                        startActivity(Intent(this@TutorialWebViewActivity, SDKKitDetectorActivity::class.java))
+                                    }
+                                    LandingActivity.A4 -> {
+                                        startActivity(Intent(this@TutorialWebViewActivity, SDKA4DetectorActivity::class.java))
+                                    }
+                                }
                                 finish()
                             }
                         }
@@ -53,17 +61,5 @@ class TutorialWebViewActivity : AppCompatActivity() {
                 loadUrl(APIController.TUTORIAL_URL)
             }
         }
-    }
-
-    override fun onDestroy() {
-        when (landingType) {
-            LandingActivity.KIT -> {
-                startActivity(Intent(this, SDKKitDetectorActivity::class.java))
-            }
-            LandingActivity.A4 -> {
-                startActivity(Intent(this, SDKA4DetectorActivity::class.java))
-            }
-        }
-        super.onDestroy()
     }
 }

@@ -275,13 +275,13 @@ public class SDKKitDetectorActivity extends SDKCameraActivity implements OnImage
                                 if (results.get(i).getTitle().equals("b'foot'") && results.get(i).getConfidence() >= 0.9) {
                                     mappedRecognitions.add(results.get(i));
                                 }
-                                if (results.get(i).getTitle().equals("b'base'") && results.get(i).getConfidence() >= 0.8) {
+                                if (results.get(i).getTitle().equals("b'base'") && results.get(i).getConfidence() >= 0.6) {
                                     mappedRecognitions.add(results.get(i));
                                 }
-                                if (results.get(i).getTitle().equals("b'left_triangle'") && results.get(i).getConfidence() >= 0.8) {
+                                if (results.get(i).getTitle().equals("b'left_triangle'") && results.get(i).getConfidence() >= 0.6) {
                                     mappedRecognitions.add(results.get(i));
                                 }
-                                if (results.get(i).getTitle().equals("b'right_triangle'") && results.get(i).getConfidence() >= 0.8) {
+                                if (results.get(i).getTitle().equals("b'right_triangle'") && results.get(i).getConfidence() >= 0.6) {
                                     mappedRecognitions.add(results.get(i));
                                 }
 
@@ -355,9 +355,9 @@ public class SDKKitDetectorActivity extends SDKCameraActivity implements OnImage
                         if (isSensor) {
                             runUI(() -> {
                                 btn_guide_1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_completed, 0, 0);
-                                btn_guide_2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
-                                btn_guide_3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
-                                btn_guide_4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
+//                                btn_guide_2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
+//                                btn_guide_3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
+//                                btn_guide_4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_incomplete, 0, 0);
                             });
                             if (!isBase) {
                                 runUI(() -> {
