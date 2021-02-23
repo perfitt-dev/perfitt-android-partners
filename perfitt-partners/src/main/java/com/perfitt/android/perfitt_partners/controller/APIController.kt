@@ -202,6 +202,7 @@ class APIController {
         rightFoot: PoolUtils.FootRectLocation,
         errorUnit: ((errorCode: Int, errorType: String, errorMsg: String) -> Unit)
     ): String? {
+        Log.d("Dony", "BASE_URL:$BASE_URL")
         return requestPost("$USERS_KIT?apiKey=$apiKey", JSONObject().apply {
             put("sourceType", sourceType)
             put("left", JSONObject().apply {
@@ -264,10 +265,10 @@ class APIController {
 
     companion object {
         val instance: APIController by lazy { Holder.INSTANCE }
-        private const val BASE_URL = "https://dev-api.perfitt.io"
-        private const val USERS_KIT = "$BASE_URL/core/v2/ml1/feet"
-        private const val USERS_A4 = "$BASE_URL/core/v2/ml2/feet"
-        private const val USERS = "$BASE_URL/core/v2/users"
+        private val BASE_URL = if (PerfittPartners.API_KEY.contains("TEST_KEY")) "https://dev-api.perfitt.io" else "https://api.perfitt.io"
+        private val USERS_KIT = "$BASE_URL/core/v2/ml1/feet"
+        private val USERS_A4 = "$BASE_URL/core/v2/ml2/feet"
+        private val USERS = "$BASE_URL/core/v2/users"
         const val TUTORIAL_URL = "https://service.perfitt.io/app/guides?app=mobile"
     }
 }

@@ -1,6 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="common_radius">2dp</dimen>
 
+    <style name="MyAppTheme.NumberPicker" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:colorControlNormal" >@color/sdk_color_primary</item>
+        <item name="colorControlNormal" >@color/sdk_color_primary</item>
+    </style>
+
     <!-- Text Style NotoSans-->
     <style name="h1">
         <item name="android:textSize">93.4sp</item>

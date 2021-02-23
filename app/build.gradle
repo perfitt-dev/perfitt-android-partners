@@ -40,5 +40,5 @@ dependencies {
     // TEST
 //    implementation project(':perfitt-partners')
     // RELEASE
-    implementation 'com.perfitt.android:perfitt-partners:1.0.0-beta20'
+    implementation 'com.perfitt.android:perfitt-partners:1.0.0-beta21'
 }

@@ -33,12 +33,12 @@ class FontableNumberPicker : NumberPicker {
 
     private fun setColor() = try {
         NumberPicker::class.java.declaredFields.let { fields ->
-            fields.forEach {
-                if (it.name == "mSelectionDivider") {
-                    it.isAccessible = true
-                    it.set(this, ColorDrawable(ContextCompat.getColor(context, R.color.sdk_color_primary)))
-                }
-            }
+//            fields.forEach {
+//                if (it.name == "mSelectionDivider") {
+//                    it.isAccessible = true
+//                    it.set(this, ColorDrawable(ContextCompat.getColor(context, R.color.sdk_color_primary)))
+//                }
+//            }
         }
     } catch (e: Exception) {
         e.printStackTrace()
