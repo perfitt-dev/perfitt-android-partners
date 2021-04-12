@@ -37,6 +37,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation rootProject.ext.constraintlayout
     implementation rootProject.ext.appcompat
+    implementation "com.google.code.gson:gson:2.8.6"
+
     // TEST
 //    implementation project(':perfitt-partners')
     // RELEASE
